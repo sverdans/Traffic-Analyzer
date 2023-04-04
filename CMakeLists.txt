@@ -8,13 +8,17 @@ project(${PROJECT_NAME})
 
 add_executable(${PROJECT_NAME}
 	source/main.cpp
+	source/AppHandler.h
 )
 
 #target_include_directories(${PROJECT_NAME} ${PCAPPLUSPLUS_INCLUDE_DIRS})
 #target_link_libraries(${PROJECT_NAME} ${PCAPPLUSPLUS_LIBRARIES})
 
 target_link_libraries(${PROJECT_NAME}
-	Pcap++ Packet++ Common++ pcap
+	Pcap++ 
+	Packet++ 
+	Common++ 
+	pcap
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

@@ -69,5 +69,7 @@
     "cinttypes": "cpp",
     "typeinfo": "cpp",
     "valarray": "cpp"
-  }
+  },
+
+  "cmake.buildDirectory": "${workspaceFolder}/build"
 }
