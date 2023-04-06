@@ -9,6 +9,8 @@ project(${PROJECT_NAME})
 add_executable(${PROJECT_NAME}
 	source/main.cpp
 	source/AppHandler.h
+	source/AppHandler.cpp
+	source/HttpStatsCollector.h
 )
 
 #target_include_directories(${PROJECT_NAME} ${PCAPPLUSPLUS_INCLUDE_DIRS})
