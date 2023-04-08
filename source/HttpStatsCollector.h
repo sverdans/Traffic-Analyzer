@@ -51,5 +51,7 @@ public:
 
 	void clear();
 	void print();
+
+	void addPacket_old(const pcpp::Packet &packet);
 	void addPacket(const pcpp::Packet &packet);
 };

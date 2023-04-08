@@ -69,13 +69,10 @@
 	"cinttypes": "cpp",
 	"typeinfo": "cpp",
 	"valarray": "cpp",
-	"csignal": "cpp",
+	"strstream": "cpp",
 	"complex": "cpp",
 	"future": "cpp",
-	"typeindex": "cpp",
-	"variant": "cpp",
-	"strstream": "cpp",
-	"cfenv": "cpp"
+	"variant": "cpp"
 },
 
   "cmake.buildDirectory": "${workspaceFolder}/build"

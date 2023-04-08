@@ -5,6 +5,8 @@
 
 int main(int argc, char **argv)
 {
+	AppHandler::setupLogger();
+
 	if (!AppHandler::parseComandLine(argc, argv))
 		return 0;
 

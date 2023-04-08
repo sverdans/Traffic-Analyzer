@@ -23,11 +23,14 @@ include(FetchContent)
 # FetchContent_Populate(pcapplusplus)
 # add_subdirectory(${pcapplusplus_SOURCE_DIR} ${pcapplusplus_BINARY_DIR})
 # endif()
+
 find_package(Boost REQUIRED COMPONENTS
 	system
 	log
+	log_setup
 	program_options
 )
+
 
 file(GLOB_RECURSE SOURCE
 	"source/*.h"
@@ -39,6 +42,7 @@ add_executable(traffic-analyzer ${SOURCE})
 target_link_libraries(traffic-analyzer
 	Boost::system
 	Boost::log
+	Boost::log_setup
 	Boost::program_options
 	
 	Pcap++

@@ -20,6 +20,7 @@ HttpStatsCollector &HttpStatsCollector::operator=(const HttpStatsCollector &othe
 {
 	userIp = other.userIp;
 	totalStat = other.totalStat;
+	return *this;
 }
 
 HttpStatsCollector::HttpStatsCollector(HttpStatsCollector &&other) noexcept
@@ -36,12 +37,11 @@ HttpStatsCollector &HttpStatsCollector::operator=(HttpStatsCollector &&other) no
 
 	other.totalStat.clear();
 	other.userIp.clear();
+	return *this;
 }
 
 void HttpStatsCollector::print()
 {
-	//	25 | 7 | 5 | 5 | 7 | 6 | 6 |
-	//	printf(" host                      ║ packets │ OUT   │ IN    ║ traffic │ OUT     │ IN      \n");
 
 	for (int i = 0; i < printedLinesCount; ++i)
 	{
@@ -64,10 +64,14 @@ void HttpStatsCollector::print()
 			   hostInfo.inTraffic);
 		printedLinesCount++;
 	}
+	//	printf("----------------------------------------------------------\n");
 }
 
-void HttpStatsCollector::addPacket(const pcpp::Packet &packet)
+void HttpStatsCollector::addPacket_old(const pcpp::Packet &packet)
 {
+	if (!packet.isPacketOfType(pcpp::HTTP))
+		return;
+
 	auto *tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>();
 	auto *ipLayer = packet.getLayerOfType<pcpp::IPv4Layer>();
 	int size = tcpLayer->getLayerPayloadSize();
@@ -77,6 +81,7 @@ void HttpStatsCollector::addPacket(const pcpp::Packet &packet)
 		auto hostIp = ipLayer->getDstIPAddress().toString();
 		auto &hostInfo = totalStat[hostIp];
 		hostInfo.addOutPacket(size);
+
 		if (hostInfo.name.empty())
 			if (auto *httpRequestLayer = packet.getLayerOfType<pcpp::HttpRequestLayer>())
 			{
@@ -89,27 +94,9 @@ void HttpStatsCollector::addPacket(const pcpp::Packet &packet)
 	{
 		auto hostIp = ipLayer->getSrcIPAddress().toString();
 		totalStat[hostIp].addInPacket(size);
-		if (totalStat[hostIp].name.empty())
-			std::cout << "HOST IP EMPTY!!!" << std::endl;
 	}
+}
 
-	/*
-		std::cout << ipLayer->getSrcIPAddress() << "\t" << ipLayer->getDstIPAddress() << std::endl;
-
-		std::cout << size << " [ bytes ]" << std::endl;
-
-		if (auto *httpRequestLayer = packet.getLayerOfType<pcpp::HttpRequestLayer>())
-		{
-			pcpp::HeaderField *hostField = httpRequestLayer->getFieldByName(PCPP_HTTP_HOST_FIELD);
-			if (hostField != NULL)
-				std::cout << hostField->getFieldValue() << std::endl;
-		}
-		else if (auto *httpResponseLayer = packet.getLayerOfType<pcpp::HttpResponseLayer>())
-		{
-			pcpp::HeaderField *refererField = httpResponseLayer->getFieldByName(PCPP_HTTP_SERVER_FIELD);
-			if (refererField != NULL)
-				std::cout << refererField->getFieldValue() << std::endl;
-		}
-		std::cout << "_______________________" << std::endl;
-	*/
+void HttpStatsCollector::addPacket(const pcpp::Packet &packet)
+{
 }

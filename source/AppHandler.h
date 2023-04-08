@@ -1,21 +1,19 @@
 #pragma once
 #include <iostream>
-#include <vector>
 #include <algorithm>
+#include <iomanip>
+#include <vector>
+#include <chrono>
 #include <mutex>
 
-#include <getopt.h>
-
-#include <boost/log/common.hpp>
-#include <boost/log/sinks.hpp>
-#include <boost/log/sources/logger.hpp>
-
-#include <boost/asio/io_service.hpp>
-#include <boost/asio/write.hpp>
-#include <boost/asio/buffer.hpp>
-#include <boost/asio/ip/tcp.hpp>
-
 #include <boost/program_options.hpp>
+#include <boost/log/trivial.hpp>
+#include <boost/log/expressions.hpp>
+#include <boost/log/utility/setup/console.hpp>
+#include <boost/log/utility/setup/file.hpp>
+#include <boost/log/utility/setup/common_attributes.hpp>
+#include <boost/parameter/keyword.hpp>
+#include <boost/log/detail/config.hpp>
 
 #include "pcapplusplus/PcapLiveDeviceList.h"
 #include "pcapplusplus/HttpLayer.h"
@@ -50,10 +48,9 @@ private:
 
 		// extract the stats object form the cookie
 		HttpStatsCollector *stats = static_cast<HttpStatsCollector *>(cookie);
-		auto parsedPacket = pcpp::Packet(packet);
 
-		if (parsedPacket.isPacketOfType(pcpp::HTTP))
-			stats->addPacket(pcpp::Packet(packet));
+		//	stats->addPacket_old(pcpp::Packet(packet));
+		stats->addPacket_old(pcpp::Packet(packet));
 	}
 
 	static void printInterfaces()
@@ -69,6 +66,24 @@ private:
 	}
 
 public:
+	static void setupLogger()
+	{
+		auto now = std::chrono::system_clock::now();
+		auto in_time_t = std::chrono::system_clock::to_time_t(now);
+
+		std::stringstream logDate;
+		logDate << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d.%X");
+		std::cout << logDate.str() << std::endl;
+		namespace logging = boost::log;
+
+		logging::add_file_log(
+			logging::keywords::file_name = "../logs/" + logDate.str() + ".log",
+			logging::keywords::format = "[%TimeStamp%] [%ThreadID%] [%Severity%] %Message%");
+		logging::add_common_attributes();
+
+		BOOST_LOG_TRIVIAL(info) << "Logger setuped.";
+	}
+
 	static bool parseComandLine(int argc, char **argv)
 	{
 		namespace po = boost::program_options;
@@ -79,14 +94,13 @@ public:
 		// declare options
 		description.add_options()("help,h", "produce help message")("list-interfaces,l", "Print the list of interfaces.")("ip,i", po::value<std::string>()->default_value(interfaceIPAddr), "Use the specified interface.")("update-time,u", po::value<int>()->default_value(5), "Terminal update frequency.")("process-time,t", po::value<int>()->default_value(60), "Program execution time.");
 
-		// parse arguments
-		po::store(po::parse_command_line(argc, argv, description), vm);
-
 		try
 		{
+			// parse arguments
+			po::store(po::parse_command_line(argc, argv, description), vm);
 			po::notify(vm);
 		}
-		catch (boost::wrapexcept<boost::program_options::invalid_option_value> &e)
+		catch (std::exception &e)
 		{
 			std::cout << "Error: " << e.what() << std::endl;
 			std::cout << description << std::endl;
@@ -108,6 +122,9 @@ public:
 		processTime = vm["process-time"].as<int>();
 		updatePeriod = vm["update-time"].as<int>();
 		interfaceIPAddr = vm["ip"].as<std::string>();
+
+		if (processTime < 0 || updatePeriod < 0)
+			return false;
 
 		return true;
 	}
@@ -138,8 +155,11 @@ public:
 		}
 
 		// create a filter instance to capture only HTTP traffic
-		pcpp::ProtoFilter protocolFilter(pcpp::HTTP);
-		dev->setFilter(protocolFilter);
+		//	pcpp::ProtoFilter protocolFilter(pcpp::HTTP);
+		//	dev->setFilter(protocolFilter);
+
+		pcpp::PortFilter httpPortFilter(80, pcpp::SRC_OR_DST);
+		dev->setFilter(httpPortFilter);
 
 		return true;
 	}
