@@ -1,61 +1,55 @@
+#pragma once
 #include <iostream>
 #include <vector>
 #include <string>
 #include <map>
 
-#include "Packet.h"
-#include "HttpLayer.h"
-#include "TcpLayer.h"
-#include "IPv4Layer.h"
-#include "DnsResourceData.h"
-
-class HostInfo
+namespace pcpp
 {
-private:
-	int inPackets;
-	int outPackets;
-	int inTraffic;
-	int outTraffic;
+	class Packet;
+}
 
-public:
+struct HostInfo
+{
+	int inPackets{0};
+	int outPackets{0};
+	int inTraffic{0};
+	int outTraffic{0};
+	std::string name;
+
+	void addInPacket(int size)
+	{
+		inPackets++;
+		inTraffic += size;
+	}
+
+	void addOutPacket(int size)
+	{
+		outPackets++;
+		outTraffic += size;
+	}
 };
 
 class HttpStatsCollector
 {
 private:
+	int printedLinesCount{0};
+	std::string userIp;
 	std::map<std::string, HostInfo> totalStat;
-	std::map<std::string, HostInfo> currentStat;
 
 public:
-	void clear() { currentStat.clear(); }
+	HttpStatsCollector(const std::string &userIp);
+	~HttpStatsCollector();
 
-	void print()
-	{
-	}
+	HttpStatsCollector(const HttpStatsCollector &other) noexcept;
 
-	void addPacket(const pcpp::Packet &packet)
-	{
-		auto *tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>();
-		auto *ipLayer = packet.getLayerOfType<pcpp::IPv4Layer>();
+	HttpStatsCollector &operator=(const HttpStatsCollector &other) noexcept;
 
-		std::cout << ipLayer->getSrcIPAddress() << "\t" << ipLayer->getDstIPAddress() << std::endl;
+	HttpStatsCollector(HttpStatsCollector &&other) noexcept;
 
-		int size = tcpLayer->getLayerPayloadSize();
+	HttpStatsCollector &operator=(HttpStatsCollector &&other) noexcept;
 
-		std::cout << size << " [ bytes ]" << std::endl;
-
-		if (auto *httpRequestLayer = packet.getLayerOfType<pcpp::HttpRequestLayer>())
-		{
-			pcpp::HeaderField *hostField = httpRequestLayer->getFieldByName(PCPP_HTTP_HOST_FIELD);
-			if (hostField != NULL)
-				std::cout << hostField->getFieldValue() << std::endl;
-		}
-		else if (auto *httpResponseLayer = packet.getLayerOfType<pcpp::HttpResponseLayer>())
-		{
-			pcpp::HeaderField *refererField = httpResponseLayer->getFieldByName(PCPP_HTTP_SERVER_FIELD);
-			if (refererField != NULL)
-				std::cout << refererField->getFieldValue() << std::endl;
-		}
-		std::cout << "_______________________" << std::endl;
-	}
+	void clear();
+	void print();
+	void addPacket(const pcpp::Packet &packet);
 };

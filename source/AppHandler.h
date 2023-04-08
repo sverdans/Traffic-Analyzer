@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -5,20 +6,31 @@
 
 #include <getopt.h>
 
-#include "PcapLiveDeviceList.h"
-#include "HttpLayer.h"
-#include "TcpLayer.h"
-#include "IPv4Layer.h"
-#include "PayloadLayer.h"
-#include "PacketUtils.h"
-#include "SystemUtils.h"
+#include <boost/log/common.hpp>
+#include <boost/log/sinks.hpp>
+#include <boost/log/sources/logger.hpp>
 
-#include "Packet.h"
-#include "EthLayer.h"
-#include "IPv4Layer.h"
-#include "TcpLayer.h"
-#include "HttpLayer.h"
-#include "PcapFileDevice.h"
+#include <boost/asio/io_service.hpp>
+#include <boost/asio/write.hpp>
+#include <boost/asio/buffer.hpp>
+#include <boost/asio/ip/tcp.hpp>
+
+#include <boost/program_options.hpp>
+
+#include "pcapplusplus/PcapLiveDeviceList.h"
+#include "pcapplusplus/HttpLayer.h"
+#include "pcapplusplus/TcpLayer.h"
+#include "pcapplusplus/IPv4Layer.h"
+#include "pcapplusplus/PayloadLayer.h"
+#include "pcapplusplus/PacketUtils.h"
+#include "pcapplusplus/SystemUtils.h"
+
+#include "pcapplusplus/Packet.h"
+#include "pcapplusplus/EthLayer.h"
+#include "pcapplusplus/IPv4Layer.h"
+#include "pcapplusplus/TcpLayer.h"
+#include "pcapplusplus/HttpLayer.h"
+#include "pcapplusplus/PcapFileDevice.h"
 
 #include "HttpStatsCollector.h"
 
@@ -32,14 +44,6 @@ private:
 	static pcpp::PcapLiveDevice *dev;
 	static std::mutex collectorMutex;
 
-	static constexpr struct option AppOptions[] =
-		{
-			{"interface", required_argument, 0, 'i'},
-			{"rate-calc-period", required_argument, 0, 'r'},
-			{"list-interfaces", no_argument, 0, 'l'},
-			{"help", no_argument, 0, 'h'},
-			{0, 0, 0, 0}};
-
 	static void onPacketArrives(pcpp::RawPacket *packet, pcpp::PcapLiveDevice *dev, void *cookie)
 	{
 		std::lock_guard<std::mutex> guard(collectorMutex);
@@ -52,54 +56,64 @@ private:
 			stats->addPacket(pcpp::Packet(packet));
 	}
 
-public:
-	static void printUsage() noexcept
-	{
-	}
-
 	static void printInterfaces()
 	{
 		const std::vector<pcpp::PcapLiveDevice *> &devList = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList();
 
-		std::cout << std::endl
-				  << "Network interfaces:" << std::endl;
+		std::cout << "Network interfaces:" << std::endl;
 
 		for (auto iter = devList.begin(); iter != devList.end(); iter++)
-		{
-			std::cout << "    -> Name: '" << (*iter)->getName() << "'   IP address: " << (*iter)->getIPv4Address().toString() << std::endl;
-		}
+			printf("    -> Name: '%-20s IP address: %s\n",
+				   ((*iter)->getName() + "'").c_str(),
+				   (*iter)->getIPv4Address().toString().c_str());
 	}
 
-	static bool initialize(int argc, char **argv)
+public:
+	static bool parseComandLine(int argc, char **argv)
 	{
-		int optionIndex{0}, opt{0};
+		namespace po = boost::program_options;
 
-		while ((opt = getopt_long(argc, argv, "i:r:hl", AppHandler::AppOptions, &optionIndex)) != -1)
+		po::variables_map vm;
+		po::options_description description("Allowed Options");
+
+		// declare options
+		description.add_options()("help,h", "produce help message")("list-interfaces,l", "Print the list of interfaces.")("ip,i", po::value<std::string>()->default_value(interfaceIPAddr), "Use the specified interface.")("update-time,u", po::value<int>()->default_value(5), "Terminal update frequency.")("process-time,t", po::value<int>()->default_value(60), "Program execution time.");
+
+		// parse arguments
+		po::store(po::parse_command_line(argc, argv, description), vm);
+
+		try
 		{
-			switch (opt)
-			{
-			case 0:
-				break;
-			case 'i':
-				interfaceIPAddr = optarg;
-				break;
-			case 'r':
-				updatePeriod = atoi(optarg);
-				break;
-			case 'h':
-				AppHandler::printUsage();
-				return false;
-				break;
-			case 'l':
-				AppHandler::printInterfaces();
-				return false;
-				break;
-			default:
-				AppHandler::printUsage();
-				return false;
-			}
+			po::notify(vm);
+		}
+		catch (boost::wrapexcept<boost::program_options::invalid_option_value> &e)
+		{
+			std::cout << "Error: " << e.what() << std::endl;
+			std::cout << description << std::endl;
+			return false;
 		}
 
+		if (vm.count("help"))
+		{
+			std::cout << description << std::endl;
+			return false;
+		}
+
+		if (vm.count("list-interfaces"))
+		{
+			printInterfaces();
+			return false;
+		}
+
+		processTime = vm["process-time"].as<int>();
+		updatePeriod = vm["update-time"].as<int>();
+		interfaceIPAddr = vm["ip"].as<std::string>();
+
+		return true;
+	}
+
+	static bool initialize()
+	{
 		dev = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDeviceByIp(interfaceIPAddr);
 		if (dev == NULL)
 		{
@@ -135,7 +149,7 @@ public:
 		std::cout << std::endl
 				  << "Starting capture in async mode..." << std::endl;
 
-		HttpStatsCollector stats;
+		HttpStatsCollector stats(interfaceIPAddr);
 		dev->startCapture(onPacketArrives, &stats);
 
 		while (processTime > 0)
@@ -144,8 +158,6 @@ public:
 
 			std::lock_guard<std::mutex> guard(collectorMutex);
 			stats.print();
-			stats.clear();
-
 			processTime -= updatePeriod;
 		}
 	}
@@ -157,8 +169,8 @@ public:
 	}
 };
 
-int AppHandler::updatePeriod{5};
-int AppHandler::processTime{30};
+int AppHandler::updatePeriod{3};
+int AppHandler::processTime{50};
 
 std::mutex AppHandler::collectorMutex;
 std::string AppHandler::interfaceIPAddr{"192.168.0.3"};
