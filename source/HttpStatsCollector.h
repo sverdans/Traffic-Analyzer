@@ -35,7 +35,6 @@ struct HostInfo
 class HttpStatsCollector
 {
 private:
-	int printedLinesCount{0};
 	std::string userIp;
 	std::map<std::string, HostInfo> totalStat;
 
@@ -51,9 +50,7 @@ public:
 
 	HttpStatsCollector &operator=(HttpStatsCollector &&other) noexcept;
 
-	void clear();
 	void print();
 
-	void addPacket_old(const pcpp::Packet &packet);
 	void addPacket(const pcpp::Packet &packet);
 };

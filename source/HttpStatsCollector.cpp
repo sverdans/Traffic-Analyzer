@@ -46,19 +46,10 @@ HttpStatsCollector &HttpStatsCollector::operator=(HttpStatsCollector &&other) no
 
 void HttpStatsCollector::print()
 {
-
-	//	for (int i = 0; i < printedLinesCount; ++i)
-	//	{
-	//		printf("\033[1A");
-	//		printf("\033[K");
-	//	}
-
-	system("clear");
-	printedLinesCount = 0;
+	// system("clear");
 
 	for (const auto &[ip, hostInfo] : totalStat)
 	{
-		//	printf("%2d ", printedLinesCount);
 		printf("%-35s %6d packets ( OUT %-6d / %6d IN ) traffic: %8d [bytes] ( OUT %-6d / %6d IN )\n",
 			   (hostInfo.name.empty() ? ip.c_str() : hostInfo.name.c_str()),
 			   hostInfo.inPackets + hostInfo.outPackets,
@@ -67,9 +58,8 @@ void HttpStatsCollector::print()
 			   hostInfo.inTraffic + hostInfo.outTraffic,
 			   hostInfo.outTraffic,
 			   hostInfo.inTraffic);
-		printedLinesCount++;
 	}
-	//	printf("----------------------------------------------------------\n");
+	printf("----------------------------------------------------------\n");
 }
 
 void HttpStatsCollector::addPacket(const pcpp::Packet &packet)
@@ -81,18 +71,24 @@ void HttpStatsCollector::addPacket(const pcpp::Packet &packet)
 	auto *tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>();
 	auto *ipLayer = packet.getLayerOfType<pcpp::IPv4Layer>();
 
+	if (!tcpLayer || !ipLayer)
+	{
+		BOOST_LOG_TRIVIAL(warning) << "IPv4Layer was nullptr";
+		return;
+	}
+
 	int size = tcpLayer->getLayerPayloadSize();
 	auto srcIp = ipLayer->getSrcIPv4Address().toString();
 	auto dstIp = ipLayer->getDstIPv4Address().toString();
 
-	BOOST_LOG_TRIVIAL(debug) << "Captured packet { "
+	BOOST_LOG_TRIVIAL(debug) << "Captured packet {"
 							 << " srcIP: " << std::left << std::setw(15) << srcIp
 							 << " dstIP: " << std::left << std::setw(15) << dstIp
 							 << " srcPort: " << std::left << std::setw(5) << tcpLayer->getSrcPort()
 							 << " dstPort: " << std::left << std::setw(5) << tcpLayer->getDstPort() << " }";
 
 	bool isInPacket;
-	HostInfo *hostInfo;
+	HostInfo *hostInfo = nullptr;
 
 	if (srcIp == userIp)
 	{

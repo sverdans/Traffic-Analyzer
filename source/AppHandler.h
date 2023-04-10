@@ -47,16 +47,13 @@ private:
 
 	static void onPacketArrives(pcpp::RawPacket *packet, pcpp::PcapLiveDevice *dev, void *cookie)
 	{
+		if (!packet)
+			std::cout << "packet = nullptr";
+
 		std::lock_guard<std::mutex> guard(collectorMutex);
 
 		// extract the stats object form the cookie
 		HttpStatsCollector *stats = static_cast<HttpStatsCollector *>(cookie);
-
-		/*if (!filter->matchPacketWithFilter(packet))
-		{
-			BOOST_LOG_TRIVIAL(warning) << "Captured packet does not match with filter.";
-			return;
-		}*/
 
 		stats->addPacket(pcpp::Packet(packet));
 	}
