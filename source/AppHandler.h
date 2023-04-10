@@ -39,11 +39,17 @@ private:
 	static constexpr int httpsPort{443};
 
 	static int updatePeriod;
-	static int processTime;
+	static int executionTime;
 
 	static std::string interfaceIPAddr;
 	static pcpp::PcapLiveDevice *dev;
 	static std::mutex collectorMutex;
+
+	static void onApplicationInterrupted(void *cookie)
+	{
+		bool *shouldStop = (bool *)cookie;
+		*shouldStop = true;
+	}
 
 	static void onPacketArrives(pcpp::RawPacket *packet, pcpp::PcapLiveDevice *dev, void *cookie)
 	{
@@ -96,7 +102,7 @@ public:
 		po::options_description description("Allowed Options");
 
 		// declare options
-		description.add_options()("help,h", "produce help message")("list-interfaces,l", "Print the list of interfaces.")("ip,i", po::value<std::string>()->default_value(interfaceIPAddr), "Use the specified interface.")("update-time,u", po::value<int>()->default_value(5), "Terminal update frequency.")("process-time,t", po::value<int>()->default_value(60), "Program execution time.");
+		description.add_options()("help,h", "Produce help message.")("list-interfaces,l", "Print the list of interfaces.")("ip,i", po::value<std::string>()->default_value(interfaceIPAddr), "Use the specified interface.")("update-time,u", po::value<int>()->default_value(5), "Terminal update frequency (in sec).")("exe-time,t", po::value<int>()->default_value(std::numeric_limits<int>::max()), "Program execution time (in sec).");
 
 		try
 		{
@@ -123,18 +129,18 @@ public:
 			return false;
 		}
 
-		processTime = vm["process-time"].as<int>();
+		executionTime = vm["exe-time"].as<int>();
 		updatePeriod = vm["update-time"].as<int>();
 		interfaceIPAddr = vm["ip"].as<std::string>();
 
 		BOOST_LOG_TRIVIAL(debug) << "AppHandler initial state: " << std::endl
 								 << "\tinterfaceIpAddr: " << interfaceIPAddr << std::endl
 								 << "\tupdatePeriod:    " << updatePeriod << std::endl
-								 << "\tprocessTime:     " << processTime << std::endl;
+								 << "\texecutionTime:     " << executionTime << std::endl;
 
-		if (processTime < 0)
+		if (executionTime < 0)
 		{
-			BOOST_LOG_TRIVIAL(error) << "processTime was negative.";
+			BOOST_LOG_TRIVIAL(error) << "executionTime was negative.";
 			return false;
 		}
 		if (updatePeriod < 0)
@@ -188,27 +194,30 @@ public:
 		HttpStatsCollector stats(interfaceIPAddr);
 		dev->startCapture(onPacketArrives, &stats);
 
-		while (processTime > 0)
+		bool shouldStop = false;
+		pcpp::ApplicationEventHandler::getInstance().onApplicationInterrupted(onApplicationInterrupted, &shouldStop);
+
+		while (!shouldStop && executionTime > 0)
 		{
-			pcpp::multiPlatformSleep(std::min(updatePeriod, processTime));
+			pcpp::multiPlatformSleep(std::min(updatePeriod, executionTime));
 
 			std::lock_guard<std::mutex> guard(collectorMutex);
 			stats.print();
-			processTime -= updatePeriod;
+			executionTime -= updatePeriod;
 		}
 
 		BOOST_LOG_TRIVIAL(info) << "Capturing stoped" << std::endl;
-	}
 
-	static void terminate()
-	{
 		dev->stopCapture();
 		dev->close();
+
+		printf("-------------------------------------------------------------RESULTS------------------------------------------------------------\n");
+		stats.print();
 	}
 };
 
-int AppHandler::updatePeriod{3};
-int AppHandler::processTime{50};
+int AppHandler::updatePeriod;
+int AppHandler::executionTime;
 
 std::mutex AppHandler::collectorMutex;
 std::string AppHandler::interfaceIPAddr{"192.168.0.3"};

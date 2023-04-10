@@ -50,7 +50,7 @@ void HttpStatsCollector::print()
 
 	for (const auto &[ip, hostInfo] : totalStat)
 	{
-		printf("%-35s %6d packets ( OUT %-6d / %6d IN ) traffic: %8d [bytes] ( OUT %-6d / %6d IN )\n",
+		printf("%-37s %6d packets (OUT %-6d | %6d IN) traffic: %8d [bytes] (OUT %-6d | %6d IN)\n",
 			   (hostInfo.name.empty() ? ip.c_str() : hostInfo.name.c_str()),
 			   hostInfo.inPackets + hostInfo.outPackets,
 			   hostInfo.outPackets,
@@ -59,21 +59,17 @@ void HttpStatsCollector::print()
 			   hostInfo.outTraffic,
 			   hostInfo.inTraffic);
 	}
-	printf("----------------------------------------------------------\n");
+	printf("--------------------------------------------------------------------------------------------------------------------------------\n");
 }
 
 void HttpStatsCollector::addPacket(const pcpp::Packet &packet)
 {
-	// verify packet is TCP
-	if (!packet.isPacketOfType(pcpp::TCP))
-		return;
-
 	auto *tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>();
 	auto *ipLayer = packet.getLayerOfType<pcpp::IPv4Layer>();
 
 	if (!tcpLayer || !ipLayer)
 	{
-		BOOST_LOG_TRIVIAL(warning) << "IPv4Layer was nullptr";
+		BOOST_LOG_TRIVIAL(warning) << "IPv4Layer or TcpLayer was nullptr";
 		return;
 	}
 
@@ -87,58 +83,35 @@ void HttpStatsCollector::addPacket(const pcpp::Packet &packet)
 							 << " srcPort: " << std::left << std::setw(5) << tcpLayer->getSrcPort()
 							 << " dstPort: " << std::left << std::setw(5) << tcpLayer->getDstPort() << " }";
 
-	bool isInPacket;
-	HostInfo *hostInfo = nullptr;
+	bool isInPacket = dstIp == userIp;
+	auto &hostInfo = isInPacket ? totalStat[srcIp] : totalStat[dstIp];
 
-	if (srcIp == userIp)
-	{
-		isInPacket = false;
-		hostInfo = &(totalStat[dstIp]);
-	}
-	else
-	{
-		isInPacket = true;
-		hostInfo = &(totalStat[srcIp]);
-	}
+	hostInfo.addPacket(size, isInPacket);
 
-	hostInfo->addPacket(size, isInPacket);
-
-	if (hostInfo->name.empty())
+	if (hostInfo.name.empty())
 	{
 		if (auto *httpRequestLayer = packet.getLayerOfType<pcpp::HttpRequestLayer>())
 		{
-			pcpp::HeaderField *hostField = httpRequestLayer->getFieldByName(PCPP_HTTP_HOST_FIELD);
-			if (hostField)
+			if (auto *hostField = httpRequestLayer->getFieldByName(PCPP_HTTP_HOST_FIELD))
 			{
-				hostInfo->name = hostField->getFieldValue();
-				BOOST_LOG_TRIVIAL(info) << "HTTP host name detected: " << hostInfo->name;
+				hostInfo.name = hostField->getFieldValue();
+				BOOST_LOG_TRIVIAL(info) << "HTTP host name detected: " << hostInfo.name;
 			}
 		}
-		else if (auto *sslLayer = packet.getLayerOfType<pcpp::SSLLayer>())
+		else if (auto *sslHadshakeLayer = packet.getLayerOfType<pcpp::SSLHandshakeLayer>())
 		{
-			while (sslLayer)
+			while (sslHadshakeLayer)
 			{
-				pcpp::SSLRecordType recType = sslLayer->getRecordType();
-				if (recType == pcpp::SSL_HANDSHAKE)
+				if (auto *clientHelloMessage = sslHadshakeLayer->getHandshakeMessageOfType<pcpp::SSLClientHelloMessage>())
 				{
-					pcpp::SSLHandshakeLayer *handshakeLayer = dynamic_cast<pcpp::SSLHandshakeLayer *>(sslLayer);
-					if (!handshakeLayer)
-						continue;
-
-					pcpp::SSLClientHelloMessage *clientHelloMessage = handshakeLayer->getHandshakeMessageOfType<pcpp::SSLClientHelloMessage>();
-					if (!clientHelloMessage)
-						continue;
-
-					pcpp::SSLServerNameIndicationExtension *sniExt = clientHelloMessage->getExtensionOfType<pcpp::SSLServerNameIndicationExtension>();
-					if (!sniExt)
-						continue;
-
-					hostInfo->name = sniExt->getHostName();
-					BOOST_LOG_TRIVIAL(info) << "HTTPS host name detected: " << hostInfo->name;
-					break;
+					if (auto *sniExt = clientHelloMessage->getExtensionOfType<pcpp::SSLServerNameIndicationExtension>())
+					{
+						hostInfo.name = sniExt->getHostName();
+						BOOST_LOG_TRIVIAL(info) << "HTTPS host name detected: " << hostInfo.name;
+						break;
+					}
 				}
-
-				sslLayer = packet.getNextLayerOfType<pcpp::SSLLayer>(sslLayer);
+				sslHadshakeLayer = packet.getNextLayerOfType<pcpp::SSLHandshakeLayer>(sslHadshakeLayer);
 			}
 		}
 	}

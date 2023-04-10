@@ -14,7 +14,6 @@ int main(int argc, char **argv)
 		return 0;
 
 	AppHandler::start();
-	AppHandler::terminate();
 
 	return 0;
 }
