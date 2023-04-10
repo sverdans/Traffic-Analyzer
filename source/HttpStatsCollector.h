@@ -17,16 +17,18 @@ struct HostInfo
 	int outTraffic{0};
 	std::string name;
 
-	void addInPacket(int size)
+	void addPacket(int size, bool isInPacket)
 	{
-		inPackets++;
-		inTraffic += size;
-	}
-
-	void addOutPacket(int size)
-	{
-		outPackets++;
-		outTraffic += size;
+		if (isInPacket)
+		{
+			inPackets++;
+			inTraffic += size;
+		}
+		else
+		{
+			outPackets++;
+			outTraffic += size;
+		}
 	}
 };
 

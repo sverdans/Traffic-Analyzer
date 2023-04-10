@@ -35,6 +35,9 @@
 class AppHandler
 {
 private:
+	static constexpr int httpPort{80};
+	static constexpr int httpsPort{443};
+
 	static int updatePeriod;
 	static int processTime;
 
@@ -49,15 +52,20 @@ private:
 		// extract the stats object form the cookie
 		HttpStatsCollector *stats = static_cast<HttpStatsCollector *>(cookie);
 
-		//	stats->addPacket_old(pcpp::Packet(packet));
-		stats->addPacket_old(pcpp::Packet(packet));
+		/*if (!filter->matchPacketWithFilter(packet))
+		{
+			BOOST_LOG_TRIVIAL(warning) << "Captured packet does not match with filter.";
+			return;
+		}*/
+
+		stats->addPacket(pcpp::Packet(packet));
 	}
 
 	static void printInterfaces()
 	{
 		const std::vector<pcpp::PcapLiveDevice *> &devList = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList();
 
-		std::cout << "Network interfaces:" << std::endl;
+		printf("Network interfaces:\n");
 
 		for (auto iter = devList.begin(); iter != devList.end(); iter++)
 			printf("    -> Name: '%-20s IP address: %s\n",
@@ -73,7 +81,6 @@ public:
 
 		std::stringstream logDate;
 		logDate << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d.%X");
-		std::cout << logDate.str() << std::endl;
 		namespace logging = boost::log;
 
 		logging::add_file_log(
@@ -102,7 +109,7 @@ public:
 		}
 		catch (std::exception &e)
 		{
-			std::cout << "Error: " << e.what() << std::endl;
+			BOOST_LOG_TRIVIAL(error) << "Exception in comand line parsing: " << e.what();
 			std::cout << description << std::endl;
 			return false;
 		}
@@ -123,8 +130,21 @@ public:
 		updatePeriod = vm["update-time"].as<int>();
 		interfaceIPAddr = vm["ip"].as<std::string>();
 
-		if (processTime < 0 || updatePeriod < 0)
+		BOOST_LOG_TRIVIAL(debug) << "AppHandler initial state: " << std::endl
+								 << "\tinterfaceIpAddr: " << interfaceIPAddr << std::endl
+								 << "\tupdatePeriod:    " << updatePeriod << std::endl
+								 << "\tprocessTime:     " << processTime << std::endl;
+
+		if (processTime < 0)
+		{
+			BOOST_LOG_TRIVIAL(error) << "processTime was negative.";
 			return false;
+		}
+		if (updatePeriod < 0)
+		{
+			BOOST_LOG_TRIVIAL(error) << "updatePeriod was negative.";
+			return false;
+		}
 
 		return true;
 	}
@@ -132,42 +152,41 @@ public:
 	static bool initialize()
 	{
 		dev = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDeviceByIp(interfaceIPAddr);
-		if (dev == NULL)
+		if (!dev)
 		{
-			std::cerr << "Cannot find interface with IPv4 address of '" << interfaceIPAddr << "'" << std::endl;
+			BOOST_LOG_TRIVIAL(error) << "Cannot find interface with IPv4 address of '" << interfaceIPAddr << "'" << std::endl;
 			return false;
 		}
 
-		std::cout << "Interface info:" << std::endl
-				  << "   Interface name:        " << dev->getName() << std::endl		   // get interface name
-				  << "   Interface description: " << dev->getDesc() << std::endl		   // get interface description
-				  << "   MAC address:           " << dev->getMacAddress() << std::endl	   // get interface MAC address
-				  << "   Default gateway:       " << dev->getDefaultGateway() << std::endl // get default gateway
-				  << "   Interface MTU:         " << dev->getMtu() << std::endl;		   // get interface MTU
-
-		if (dev->getDnsServers().size() > 0)
-			std::cout << "   DNS server:            " << dev->getDnsServers().at(0) << std::endl;
+		BOOST_LOG_TRIVIAL(info) << "Interface info:" << std::endl
+								<< "\tInterface name:        " << dev->getName() << std::endl					   // get interface name
+								<< "\tInterface description: " << dev->getDesc() << std::endl					   // get interface description
+								<< "\tMAC address:           " << dev->getMacAddress().toString() << std::endl	   // get interface MAC address
+								<< "\tDefault gateway:       " << dev->getDefaultGateway().toString() << std::endl // get default gateway
+								<< "\tInterface MTU:         " << dev->getMtu() << std::endl;					   // get interface MTU
 
 		if (!dev->open())
 		{
-			std::cerr << "Cannot open device" << std::endl;
+			BOOST_LOG_TRIVIAL(error) << "Cannot open device" << std::endl;
 			return false;
 		}
 
-		// create a filter instance to capture only HTTP traffic
-		//	pcpp::ProtoFilter protocolFilter(pcpp::HTTP);
-		//	dev->setFilter(protocolFilter);
+		pcpp::ProtoFilter filter(pcpp::HTTP);
 
-		pcpp::PortFilter httpPortFilter(80, pcpp::SRC_OR_DST);
-		dev->setFilter(httpPortFilter);
+		//	pcpp::OrFilter portFilter;
+		//	pcpp::PortFilter httpPortFilter(httpPort, pcpp::SRC_OR_DST);
+		//	pcpp::PortFilter httpsPortFilter(httpsPort, pcpp::SRC_OR_DST);
+		//	portFilter.addFilter(&httpPortFilter);
+		//	portFilter.addFilter(&httpsPortFilter);
+
+		dev->setFilter(filter);
 
 		return true;
 	}
 
 	static void start()
 	{
-		std::cout << std::endl
-				  << "Starting capture in async mode..." << std::endl;
+		BOOST_LOG_TRIVIAL(info) << "Starting capture in async mode" << std::endl;
 
 		HttpStatsCollector stats(interfaceIPAddr);
 		dev->startCapture(onPacketArrives, &stats);
@@ -180,6 +199,8 @@ public:
 			stats.print();
 			processTime -= updatePeriod;
 		}
+
+		BOOST_LOG_TRIVIAL(info) << "Capturing stoped" << std::endl;
 	}
 
 	static void terminate()
