@@ -11,10 +11,10 @@ namespace pcpp
 
 struct HostInfo
 {
-	int inPackets{0};
-	int outPackets{0};
-	int inTraffic{0};
-	int outTraffic{0};
+	unsigned int inPackets{0};
+	unsigned int outPackets{0};
+	unsigned int inTraffic{0};
+	unsigned int outTraffic{0};
 	std::string name;
 
 	void addPacket(int size, bool isInPacket)
@@ -51,6 +51,7 @@ public:
 	HttpStatsCollector &operator=(HttpStatsCollector &&other) noexcept;
 
 	void print();
+	void printWithStat();
 
 	void addPacket(const pcpp::Packet &packet);
 };

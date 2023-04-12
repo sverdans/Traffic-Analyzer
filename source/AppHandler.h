@@ -15,29 +15,17 @@
 #include <boost/parameter/keyword.hpp>
 #include <boost/log/detail/config.hpp>
 
-#include "pcapplusplus/PcapLiveDeviceList.h"
-#include "pcapplusplus/HttpLayer.h"
-#include "pcapplusplus/TcpLayer.h"
-#include "pcapplusplus/IPv4Layer.h"
-#include "pcapplusplus/PayloadLayer.h"
-#include "pcapplusplus/PacketUtils.h"
-#include "pcapplusplus/SystemUtils.h"
-
-#include "pcapplusplus/Packet.h"
-#include "pcapplusplus/EthLayer.h"
-#include "pcapplusplus/IPv4Layer.h"
-#include "pcapplusplus/TcpLayer.h"
-#include "pcapplusplus/HttpLayer.h"
-#include "pcapplusplus/PcapFileDevice.h"
+#include "PcapLiveDeviceList.h"
+#include "PayloadLayer.h"
+#include "PacketUtils.h"
+#include "SystemUtils.h"
+#include "Packet.h"
 
 #include "HttpStatsCollector.h"
 
 class AppHandler
 {
 private:
-	static constexpr int httpPort{80};
-	static constexpr int httpsPort{443};
-
 	static int updatePeriod;
 	static int executionTime;
 
@@ -176,12 +164,6 @@ public:
 
 		pcpp::ProtoFilter filter(pcpp::HTTP);
 
-		//	pcpp::OrFilter portFilter;
-		//	pcpp::PortFilter httpPortFilter(httpPort, pcpp::SRC_OR_DST);
-		//	pcpp::PortFilter httpsPortFilter(httpsPort, pcpp::SRC_OR_DST);
-		//	portFilter.addFilter(&httpPortFilter);
-		//	portFilter.addFilter(&httpsPortFilter);
-
 		dev->setFilter(filter);
 
 		return true;
@@ -211,8 +193,7 @@ public:
 		dev->stopCapture();
 		dev->close();
 
-		printf("-------------------------------------------------------------RESULTS------------------------------------------------------------\n");
-		stats.print();
+		stats.printWithStat();
 	}
 };
 

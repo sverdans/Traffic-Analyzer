@@ -3,12 +3,13 @@
 #include <iomanip>
 #include <boost/log/trivial.hpp>
 
-#include "pcapplusplus/Packet.h"
-#include "pcapplusplus/HttpLayer.h"
-#include "pcapplusplus/SSLLayer.h"
-#include "pcapplusplus/TcpLayer.h"
-#include "pcapplusplus/IPv4Layer.h"
-#include "pcapplusplus/DnsResourceData.h"
+#include "Packet.h"
+#include "HttpLayer.h"
+#include "SSLLayer.h"
+#include "TcpLayer.h"
+#include "UdpLayer.h"
+#include "IPv4Layer.h"
+#include "DnsResourceData.h"
 
 HttpStatsCollector::HttpStatsCollector(const std::string &userIp) : userIp(userIp) {}
 HttpStatsCollector::~HttpStatsCollector()
@@ -46,11 +47,9 @@ HttpStatsCollector &HttpStatsCollector::operator=(HttpStatsCollector &&other) no
 
 void HttpStatsCollector::print()
 {
-	// system("clear");
-
 	for (const auto &[ip, hostInfo] : totalStat)
 	{
-		printf("%-37s %6d packets (OUT %-6d | %6d IN) traffic: %8d [bytes] (OUT %-6d | %6d IN)\n",
+		printf("%-37s %6u packets (OUT %-6u | %6u IN) traffic: %8u [bytes] (OUT %-6u | %6u IN)\n",
 			   (hostInfo.name.empty() ? ip.c_str() : hostInfo.name.c_str()),
 			   hostInfo.inPackets + hostInfo.outPackets,
 			   hostInfo.outPackets,
@@ -62,26 +61,49 @@ void HttpStatsCollector::print()
 	printf("--------------------------------------------------------------------------------------------------------------------------------\n");
 }
 
+void HttpStatsCollector::printWithStat()
+{
+	printf("-------------------------------------------------------------RESULTS------------------------------------------------------------\n");
+	print();
+	unsigned int totalPacketsInCount{0}, totalPacketsOutCount{0};
+	unsigned int totalTrafficIn{0}, totalTrafficOut{0};
+
+	for (const auto &[ip, hostInfo] : totalStat)
+	{
+		totalPacketsInCount += hostInfo.inPackets;
+		totalPacketsOutCount += hostInfo.outPackets;
+
+		totalTrafficIn += hostInfo.inTraffic;
+		totalTrafficOut += hostInfo.outTraffic;
+	}
+	printf("Total count of captured packets: %u\n", totalPacketsInCount + totalPacketsOutCount);
+	printf("Total count of captured incoming packets: %u\n", totalPacketsInCount);
+	printf("Total count of captured outgoing packets: %u\n", totalPacketsOutCount);
+
+	printf("Total traffic of captured packets: %u\n", totalTrafficIn + totalTrafficOut);
+	printf("Total traffic of captured incoming packets: %u\n", totalTrafficIn);
+	printf("Total traffic of captured outgoing packets: %u\n", totalTrafficOut);
+}
+
 void HttpStatsCollector::addPacket(const pcpp::Packet &packet)
 {
-	auto *tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>();
 	auto *ipLayer = packet.getLayerOfType<pcpp::IPv4Layer>();
 
-	if (!tcpLayer || !ipLayer)
+	if (!ipLayer)
 	{
-		BOOST_LOG_TRIVIAL(warning) << "IPv4Layer or TcpLayer was nullptr";
+		BOOST_LOG_TRIVIAL(warning) << "IPLayer was nullptr";
 		return;
 	}
 
-	int size = tcpLayer->getLayerPayloadSize();
-	auto srcIp = ipLayer->getSrcIPv4Address().toString();
-	auto dstIp = ipLayer->getDstIPv4Address().toString();
+	int size = packet.getRawPacket()->getRawDataLen();
+
+	auto srcIp = ipLayer->getSrcIPAddress().toString();
+	auto dstIp = ipLayer->getDstIPAddress().toString();
 
 	BOOST_LOG_TRIVIAL(debug) << "Captured packet {"
 							 << " srcIP: " << std::left << std::setw(15) << srcIp
 							 << " dstIP: " << std::left << std::setw(15) << dstIp
-							 << " srcPort: " << std::left << std::setw(5) << tcpLayer->getSrcPort()
-							 << " dstPort: " << std::left << std::setw(5) << tcpLayer->getDstPort() << " }";
+							 << " size: " << std::left << std::setw(9) << size << " }";
 
 	bool isInPacket = dstIp == userIp;
 	auto &hostInfo = isInPacket ? totalStat[srcIp] : totalStat[dstIp];
@@ -100,18 +122,13 @@ void HttpStatsCollector::addPacket(const pcpp::Packet &packet)
 		}
 		else if (auto *sslHadshakeLayer = packet.getLayerOfType<pcpp::SSLHandshakeLayer>())
 		{
-			while (sslHadshakeLayer)
+			if (auto *clientHelloMessage = sslHadshakeLayer->getHandshakeMessageOfType<pcpp::SSLClientHelloMessage>())
 			{
-				if (auto *clientHelloMessage = sslHadshakeLayer->getHandshakeMessageOfType<pcpp::SSLClientHelloMessage>())
+				if (auto *sniExt = clientHelloMessage->getExtensionOfType<pcpp::SSLServerNameIndicationExtension>())
 				{
-					if (auto *sniExt = clientHelloMessage->getExtensionOfType<pcpp::SSLServerNameIndicationExtension>())
-					{
-						hostInfo.name = sniExt->getHostName();
-						BOOST_LOG_TRIVIAL(info) << "HTTPS host name detected: " << hostInfo.name;
-						break;
-					}
+					hostInfo.name = sniExt->getHostName();
+					BOOST_LOG_TRIVIAL(info) << "HTTPS host name detected: " << hostInfo.name;
 				}
-				sslHadshakeLayer = packet.getNextLayerOfType<pcpp::SSLHandshakeLayer>(sslHadshakeLayer);
 			}
 		}
 	}
