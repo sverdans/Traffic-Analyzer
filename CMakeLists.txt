@@ -18,12 +18,13 @@ FetchContent_Declare(json
 )
 FetchContent_MakeAvailable(json)
 
-#FetchContent_Declare(PcapPlusPlus
+#option(PCAPPP_INSTALL "Install PcapPlusPlus" ON)
+#FetchContent_Declare(pcpp
 #	GIT_REPOSITORY https://github.com/seladb/PcapPlusPlus.git
 #	SOURCE_DIR ${CMAKE_SOURCE_DIR}/external/PcapPlusPlus
 #	GIT_TAG master
 #)
-#FetchContent_MakeAvailable(PcapPlusPlus)
+#FetchContent_MakeAvailable(pcpp)
 
 find_package(PcapPlusPlus REQUIRED)
 
