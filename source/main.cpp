@@ -1,19 +1,9 @@
 #include <iostream>
-#include "stdlib.h"
 
-#include "AppHandler.h"
+#include "Application.h"
 
 int main(int argc, char **argv)
 {
-	AppHandler::setupLogger();
-
-	if (!AppHandler::parseComandLine(argc, argv))
-		return 0;
-
-	if (!AppHandler::initialize())
-		return 0;
-
-	AppHandler::start();
-
-	return 0;
+	Application app;
+	return app.run(argc, argv);
 }
