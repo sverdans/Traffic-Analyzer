@@ -15,6 +15,7 @@
 #include <boost/log/detail/config.hpp>
 
 #include <served/served.hpp>
+#include "../../../external/served/src/served/served.hpp"
 
 #include "PcapLiveDeviceList.h"
 #include "SystemUtils.h"
@@ -24,6 +25,10 @@
 
 namespace app
 {
+	/**
+	 *	\brief Структура, в которой хранятся аргументы запуска программы
+	 *
+	 */
 	struct ProgramOptions
 	{
 		bool shouldClose{false};

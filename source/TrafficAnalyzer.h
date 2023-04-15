@@ -13,6 +13,9 @@
 
 #include "ITrafficStats.h"
 
+/**
+ *	\brief Класс, реализующий захват пакетов из живого траффика
+ */
 template <class T, std::enable_if_t<std::is_base_of<ITrafficStats, T>::value, int> = 0>
 class TrafficAnalyzer
 {
