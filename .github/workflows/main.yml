@@ -1,13 +1,11 @@
-name: Doxygen Action
+name: Documentation
 
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
-  build:
+  build-documentation:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,10 +15,12 @@ jobs:
         uses: mattnotmitt/doxygen-action@v1.1.0
         with:
           doxyfile-path: "./Doxyfile.documentation"
-          working-directory: "."
+          working-directory: .
 
-      - name: Deploy
+      - name: GH Pages Deployment
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./html
+          publish_dir: ./doc/html/
+          force_orphan: true
+          publish_branch: gh-pages
