@@ -13,14 +13,14 @@
 
 #include "ITrafficStats.h"
 
-template <class T, typename = std::enable_if_t<std::is_base_of<ITrafficStats, T>::value>>
+template <class T, std::enable_if_t<std::is_base_of<ITrafficStats, T>::value, int> = 0>
 class TrafficAnalyzer
 {
 private:
 	std::mutex collectorMutex;
 	std::string interfaceIPAddr;
 
-	pcpp::ProtoFilter filter;
+	pcpp::OrFilter filter;
 	pcpp::PcapLiveDevice *dev;
 
 	T trafficStats;
@@ -28,14 +28,13 @@ private:
 	static void onPacketArrives(pcpp::RawPacket *packet, pcpp::PcapLiveDevice *dev, void *cookie)
 	{
 		TrafficAnalyzer *analyzer = static_cast<TrafficAnalyzer *>(cookie);
-
 		std::lock_guard<std::mutex> guard(analyzer->collectorMutex);
 		analyzer->trafficStats.addPacket(pcpp::Packet(packet));
 	}
 
 public:
-	TrafficAnalyzer(std::string interfaceIPAddr, pcpp::ProtocolType protocol)
-		: interfaceIPAddr(interfaceIPAddr), filter(pcpp::ProtoFilter(protocol)), trafficStats(T(interfaceIPAddr))
+	TrafficAnalyzer(const std::string interfaceIPAddr, std::vector<pcpp::GeneralFilter *> &portFilterVec)
+		: interfaceIPAddr(interfaceIPAddr), filter(pcpp::OrFilter(portFilterVec)), trafficStats(T(interfaceIPAddr))
 	{
 		dev = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDeviceByIp(interfaceIPAddr);
 
@@ -45,11 +44,16 @@ public:
 		if (!dev->open())
 			throw std::runtime_error("TrafficAnalyzer: cannot open device");
 
+		std::string filterAsString;
+		filter.parseToString(filterAsString);
+
 		if (!dev->setFilter(filter))
 		{
 			dev->close();
-			throw std::runtime_error("TrafficAnalyzer: cannot set filter");
+			throw std::runtime_error("TrafficAnalyzer: cannot set filter '" + filterAsString + "'");
 		}
+
+		BOOST_LOG_TRIVIAL(info) << "TrafficAnalyzer filter: '" << filterAsString << "'";
 	}
 
 	~TrafficAnalyzer()

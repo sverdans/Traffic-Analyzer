@@ -73,14 +73,7 @@ public:
 
 	void addPacket(const pcpp::Packet &packet) override
 	{
-		if (!packet.isPacketOfType(pcpp::TCP))
-		{
-			BOOST_LOG_TRIVIAL(debug) << "packet is not tcp";
-			return;
-		}
-
 		auto *ipLayer = packet.getLayerOfType<pcpp::IPLayer>();
-
 		if (!ipLayer)
 		{
 			BOOST_LOG_TRIVIAL(warning) << "IPLayer was nullptr";
@@ -91,16 +84,39 @@ public:
 		auto dstIp = ipLayer->getDstIPAddress().toString();
 		int size = packet.getRawPacket()->getRawDataLen();
 
+		int srcPort, dstPort;
+		std::string transportProtoName;
+
 		/*
-		auto *tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>();
-		int srcPort = tcpLayer->getSrcPort();
-		int dstPort = tcpLayer->getDstPort();
-		BOOST_LOG_TRIVIAL(debug) << "Captured packet {"
-								 << " srcIP: " << std::left << std::setw(15) << srcIp
-								 << " dstIP: " << std::left << std::setw(15) << dstIp
-								 << " srcPort: " << std::left << std::setw(6) << srcPort
-								 << " dstPort: " << std::left << std::setw(6) << dstPort
-								 << " }";
+				if (auto *tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>())
+				{
+					transportProtoName = "TCP";
+					srcPort = tcpLayer->getSrcPort();
+					dstPort = tcpLayer->getDstPort();
+				}
+				else if (auto *udpLayer = packet.getLayerOfType<pcpp::UdpLayer>())
+				{
+					transportProtoName = "UDP";
+					srcPort = udpLayer->getSrcPort();
+					dstPort = udpLayer->getDstPort();
+				}
+				else
+				{
+					BOOST_LOG_TRIVIAL(warning) << "not tcp not udp packet: ";
+					auto *l = packet.getFirstLayer();
+					while (l)
+					{
+						BOOST_LOG_TRIVIAL(info) << "\t\tprotocjl: " << l->getProtocol();
+						l = l->getNextLayer();
+					}
+				}
+
+				BOOST_LOG_TRIVIAL(debug) << "Captured " << transportProtoName << " packet {"
+										 << " srcIP: " << std::left << std::setw(15) << srcIp
+										 << " dstIP: " << std::left << std::setw(15) << dstIp
+										 << " srcPort: " << std::left << std::setw(6) << srcPort
+										 << " dstPort: " << std::left << std::setw(6) << dstPort
+										 << " }";
 		*/
 
 		BOOST_LOG_TRIVIAL(debug) << "Captured packet {"

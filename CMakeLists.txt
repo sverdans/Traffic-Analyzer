@@ -16,18 +16,6 @@ FetchContent_Declare(json
 	SOURCE_DIR ${CMAKE_SOURCE_DIR}/external/nlohmann_json)
 FetchContent_MakeAvailable(json)
 
-FetchContent_Declare(googletest
-	GIT_REPOSITORY https://github.com/google/googletest.git
-	SOURCE_DIR ${CMAKE_SOURCE_DIR}/external/google/googletest
-	GIT_TAG main)
-FetchContent_MakeAvailable(googletest)
-
-FetchContent_Declare(benchmark
-	GIT_REPOSITORY https://github.com/google/benchmark.git
-	SOURCE_DIR ${CMAKE_SOURCE_DIR}/external/benchmark
-	GIT_TAG main)
-FetchContent_MakeAvailable(benchmark)
-
 FetchContent_Declare(PcapPlusPlus
 	GIT_REPOSITORY https://github.com/seladb/PcapPlusPlus.git
 	SOURCE_DIR ${CMAKE_SOURCE_DIR}/external/PcapPlusPlus
@@ -41,17 +29,15 @@ find_package(Boost REQUIRED COMPONENTS
 	program_options
 )
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(SERVED_PKG REQUIRED IMPORTED_TARGET served)
+
 file(GLOB_RECURSE SOURCE
 	"source/*.h"
 	"source/*.cpp"
 )
 
 add_executable(traffic-analyzer ${SOURCE})
-
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(SERVED_PKG REQUIRED IMPORTED_TARGET served)
-
-target_include_directories(traffic-analyzer PRIVATE ${PCAPPLUSPLUS_HEADER_DIR})
 
 target_link_libraries(traffic-analyzer PRIVATE
 	Boost::system
@@ -66,5 +52,8 @@ target_link_libraries(traffic-analyzer PRIVATE
 	PkgConfig::SERVED_PKG
 
 	nlohmann_json::nlohmann_json
-	benchmark::benchmark
 )
+
+enable_testing()
+
+add_subdirectory(tests)
