@@ -1,26 +1,16 @@
-name: Documentation
+name: publish-docs
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  build-documentation:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Doxygen Action
-        uses: mattnotmitt/doxygen-action@v1.1.0
-        with:
-          doxyfile-path: "./Doxyfile.documentation"
-          working-directory: .
-
-      - name: GH Pages Deployment
-        uses: peaceiris/actions-gh-pages@v3
+      - uses: DenverCoder1/doxygen-github-pages-action@v1.2.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./doc/html/
-          force_orphan: true
-          publish_branch: gh-pages
+          config_file: Doxyfile.documentation

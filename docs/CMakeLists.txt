@@ -6,8 +6,9 @@ if(DOXYGEN_FOUND)
 	set(DOXYGEN_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/docs)
 	set(doxy_html_index_file 	 ${PROJECT_SOURCE_DIR}/docs/html/index.html)
 	set(doxy_output_root     	 ${PROJECT_SOURCE_DIR}/docs)
-	
-	doxygen_add_docs(documentation ALL ${PROJECT_SOURCE_DIR}/source)
+	set(DOXYGEN_README_FILE 	 ${PROJECT_SOURCE_DIR}/README.md)
+
+	doxygen_add_docs(documentation ALL ${SOURCE})
 
 	execute_process(COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_SOURCE_DIR}/build/docs/Doxyfile.documentation)
 else(DOXYGEN_FOUND)
