@@ -1,4 +1,4 @@
-name: publish-docs
+name: doxygen
 
 on:
   push:
