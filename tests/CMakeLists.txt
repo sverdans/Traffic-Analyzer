@@ -18,11 +18,22 @@ file(GLOB_RECURSE TEST_SOURCE
 
 add_executable(mytest 
 	${TEST_SOURCE}
-	../source/TrafficAnalyzer.h
 )
 
 target_link_libraries(mytest PRIVATE 
 	gtest_main
+	gmock_main
+
+	Pcap++
+	Packet++
+	Common++
+
+	Boost::system
+	Boost::log
+	Boost::log_setup
+	Boost::program_options
+
+	nlohmann_json::nlohmann_json
 )
 
 add_test(mygtest mytest)

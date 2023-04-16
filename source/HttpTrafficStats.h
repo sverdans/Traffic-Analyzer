@@ -152,4 +152,9 @@ public:
 			}
 		}
 	}
+
+	void clear() override
+	{
+		stat.clear();
+	}
 };

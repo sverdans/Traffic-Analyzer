@@ -1,151 +1,41 @@
 #include <iostream>
 #include <vector>
-#include <iostream>
 #include <algorithm>
-#include <iomanip>
-#include <sstream>
-#include <chrono>
 
-#include <boost/program_options.hpp>
 #include <boost/log/trivial.hpp>
-#include <boost/log/expressions.hpp>
-#include <boost/log/utility/setup/console.hpp>
-#include <boost/log/utility/setup/file.hpp>
-#include <boost/log/utility/setup/common_attributes.hpp>
-#include <boost/log/detail/config.hpp>
-
 #include <served/served.hpp>
-#include "../../../external/served/src/served/served.hpp"
 
-#include "PcapLiveDeviceList.h"
 #include "SystemUtils.h"
 
+#include "App.h"
 #include "TrafficAnalyzer.h"
 #include "HttpTrafficStats.h"
 
-namespace app
-{
-	/**
-	 *	\brief Структура, в которой хранятся аргументы запуска программы
-	 *
-	 */
-	struct ProgramOptions
-	{
-		bool shouldClose{false};
-		int updatePeriod;
-		int executionTime;
-		std::string interfaceIPAddr;
-	};
-
-	void onApplicationInterrupted(void *cookie)
-	{
-		bool *shouldStop = static_cast<bool *>(cookie);
-		*shouldStop = true;
-	}
-
-	void printInterfaces()
-	{
-		const std::vector<pcpp::PcapLiveDevice *> &devList = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList();
-
-		printf("Network interfaces:\n");
-
-		for (auto iter = devList.begin(); iter != devList.end(); iter++)
-			printf("  -> Name: '%-25s IP address: %s\n",
-				   ((*iter)->getName() + "'").c_str(),
-				   (*iter)->getIPv4Address().toString().c_str());
-	}
-
-	void setupLogger()
-	{
-		auto now = std::chrono::system_clock::now();
-		auto in_time_t = std::chrono::system_clock::to_time_t(now);
-
-		std::stringstream logDate;
-		logDate << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d.%X");
-		namespace logging = boost::log;
-
-		logging::add_file_log(
-			logging::keywords::file_name = "../logs/" + logDate.str() + "[%N].log",
-			logging::keywords::rotation_size = 1 * 1024 * 1024,
-			logging::keywords::format = "[%TimeStamp%] [%ThreadID%] [%Severity%] %Message%");
-		logging::add_common_attributes();
-
-		BOOST_LOG_TRIVIAL(info) << "Logger setuped.";
-	}
-
-	bool parseComandLine(int argc, char **argv, ProgramOptions &options)
-	{
-		options.interfaceIPAddr = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList()[0]->getIPv4Address().toString();
-
-		namespace po = boost::program_options;
-
-		po::variables_map vm;
-		po::options_description description("Allowed Options");
-
-		description.add_options()("help,h", "Produce help message.")("list-interfaces,l", "Print the list of interfaces.")("ip,i", po::value<std::string>()->default_value(options.interfaceIPAddr), "Use the specified interface.")("exe-time,t", po::value<int>()->default_value(std::numeric_limits<int>::max()), "Program execution time (in sec).")("update-time,u", po::value<int>()->default_value(5), "Terminal update frequency (in sec).");
-
-		try
-		{
-			po::store(po::parse_command_line(argc, argv, description), vm);
-			po::notify(vm);
-		}
-		catch (std::exception &e)
-		{
-			BOOST_LOG_TRIVIAL(fatal) << "Exception in comand line parsing: " << e.what();
-			return false;
-		}
-
-		if (vm.count("help"))
-		{
-			std::cout << description << std::endl;
-			options.shouldClose = true;
-		}
-
-		if (vm.count("list-interfaces"))
-		{
-			printInterfaces();
-			options.shouldClose = true;
-		}
-
-		options.executionTime = vm["exe-time"].as<int>();
-		options.updatePeriod = vm["update-time"].as<int>();
-		options.interfaceIPAddr = vm["ip"].as<std::string>();
-
-		BOOST_LOG_TRIVIAL(debug) << "AppHandler initial state: "
-								 << "{ interfaceIpAddr: " << options.interfaceIPAddr << ", "
-								 << "executionTime: " << options.executionTime << ", "
-								 << "updatePeriod: " << options.updatePeriod << " }";
-
-		if (options.executionTime < 0)
-		{
-			BOOST_LOG_TRIVIAL(error) << "executionTime was negative.";
-			return false;
-		}
-		if (options.updatePeriod < 0)
-		{
-			BOOST_LOG_TRIVIAL(error) << "updatePeriod was negative.";
-			return false;
-		}
-
-		return true;
-	}
-}
-
 int main(int argc, char **argv)
 {
-	using namespace app;
+	app::setupLogger();
 
-	setupLogger();
+	app::ProgramOptions options;
 
-	ProgramOptions options;
-
-	if (!parseComandLine(argc, argv, options))
+	try
+	{
+		options = app::parseComandLine(argc, argv);
+	}
+	catch (std::exception &e)
+	{
+		BOOST_LOG_TRIVIAL(fatal) << "parseComandLine exception: " << e.what();
 		return -1;
+	}
 
 	if (options.shouldClose)
 		return 0;
 
-	pcpp::ApplicationEventHandler::getInstance().onApplicationInterrupted(onApplicationInterrupted, &options.shouldClose);
+	BOOST_LOG_TRIVIAL(debug) << "App initial state: "
+							 << "{ interfaceIpAddr: " << options.interfaceIPAddr << ", "
+							 << "executionTime: " << options.executionTime << ", "
+							 << "updatePeriod: " << options.updatePeriod << " }";
+
+	pcpp::ApplicationEventHandler::getInstance().onApplicationInterrupted(app::onApplicationInterrupted, &options.shouldClose);
 
 	TrafficAnalyzer<HttpTrafficStats> *httpAnalyzer{nullptr};
 	std::vector<pcpp::GeneralFilter *> portFilterVec = {
@@ -158,8 +48,9 @@ int main(int argc, char **argv)
 	}
 	catch (std::exception &e)
 	{
-		BOOST_LOG_TRIVIAL(fatal) << "Cannot create httpAnalyzer. Exception: " << e.what() << std::endl;
+		BOOST_LOG_TRIVIAL(fatal) << "TrafficAnalyzer creating exception: " << e.what() << std::endl;
 		delete httpAnalyzer;
+
 		for (auto it : portFilterVec)
 			delete it;
 
@@ -171,7 +62,7 @@ int main(int argc, char **argv)
 		[&](served::response &res, const served::request &req)
 		{
 			res.set_header("content-type", "application/json");
-			BOOST_LOG_TRIVIAL(debug) << "server " << std::endl;
+			BOOST_LOG_TRIVIAL(debug) << "Server received a request GET /stat" << std::endl;
 			res << httpAnalyzer->getJsonStat();
 		});
 

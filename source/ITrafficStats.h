@@ -17,4 +17,5 @@ public:
 	virtual std::string toJsonString() = 0;
 
 	virtual void addPacket(const pcpp::Packet &packet) = 0;
+	virtual void clear() = 0;
 };

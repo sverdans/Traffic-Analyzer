@@ -59,10 +59,7 @@ public:
 		BOOST_LOG_TRIVIAL(info) << "TrafficAnalyzer filter: '" << filterAsString << "'";
 	}
 
-	~TrafficAnalyzer()
-	{
-		dev->close();
-	}
+	~TrafficAnalyzer() { dev->close(); }
 
 	TrafficAnalyzer(const TrafficAnalyzer &) = delete;
 	TrafficAnalyzer &operator=(const TrafficAnalyzer &) = delete;
@@ -88,6 +85,10 @@ public:
 		other.dev = nullptr;
 	}
 
+	void startCapture() { dev->startCapture(onPacketArrives, this); }
+
+	void stopCapture() { dev->stopCapture(); }
+
 	std::string getPlaneTextStat()
 	{
 		std::lock_guard<std::mutex> guard(collectorMutex);
@@ -100,13 +101,9 @@ public:
 		return trafficStats.toJsonString();
 	}
 
-	void startCapture()
+	void clearStats()
 	{
-		dev->startCapture(onPacketArrives, this);
-	}
-
-	void stopCapture()
-	{
-		dev->stopCapture();
+		std::lock_guard<std::mutex> guard(collectorMutex);
+		trafficStats.clear();
 	}
 };

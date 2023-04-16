@@ -22,12 +22,6 @@ FetchContent_Declare(PcapPlusPlus
 	GIT_TAG master)
 FetchContent_MakeAvailable(PcapPlusPlus)
 
-#FetchContent_Declare(served
-#	GIT_REPOSITORY https://github.com/meltwater/served.git
-#	SOURCE_DIR ${CMAKE_SOURCE_DIR}/external/served
-#	GIT_TAG master)
-#FetchContent_MakeAvailable(served)
-
 find_package(Boost REQUIRED COMPONENTS
 	system
 	log
@@ -55,11 +49,11 @@ target_link_libraries(traffic-analyzer PRIVATE
 	Packet++
 	Common++
 
-	#served
 	PkgConfig::SERVED_PKG
 
 	nlohmann_json::nlohmann_json
 )
+include_directories(Source)
 
 add_subdirectory(tests)
 add_subdirectory(docs)
