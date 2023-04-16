@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['hostinfo_5',['HostInfo',['../structHostInfo.html',1,'']]],
-  ['httptrafficstats_6',['HttpTrafficStats',['../classHttpTrafficStats.html',1,'']]]
+  ['hostinfo_6',['HostInfo',['../structHostInfo.html',1,'']]],
+  ['httptrafficstats_7',['HttpTrafficStats',['../classHttpTrafficStats.html',1,'']]]
 ];
