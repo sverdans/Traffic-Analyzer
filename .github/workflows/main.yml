@@ -1,12 +1,12 @@
 name: Doxygen Git Hub Pages Deploy Action
+permissions:
+  contents: write
 
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-  permissions:
-    contents: write
 
 jobs:
   deploy:
