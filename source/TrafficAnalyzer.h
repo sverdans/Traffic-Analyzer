@@ -21,7 +21,7 @@ class TrafficAnalyzer
 {
 private:
 	std::mutex collectorMutex;
-	std::string interfaceIPAddr;
+	std::string interfaceIPAddr; ///< Ip адрес интерфейса, для которого собирается статистика
 
 	pcpp::OrFilter filter;
 	pcpp::PcapLiveDevice *dev;
@@ -36,27 +36,39 @@ private:
 	}
 
 public:
-	TrafficAnalyzer(const std::string interfaceIPAddr, std::vector<pcpp::GeneralFilter *> &portFilterVec)
-		: interfaceIPAddr(interfaceIPAddr), filter(pcpp::OrFilter(portFilterVec)), trafficStats(T(interfaceIPAddr))
+	TrafficAnalyzer(const std::string interfaceIPAddr)
+		: interfaceIPAddr(interfaceIPAddr), trafficStats(T(interfaceIPAddr)) {}
+
+	bool initialize(std::vector<pcpp::GeneralFilter *> &portFilterVec, std::string &errorInfo)
 	{
+		this->filter = pcpp::OrFilter(portFilterVec);
+
 		dev = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDeviceByIp(interfaceIPAddr);
 
 		if (!dev)
-			throw std::runtime_error("TrafficAnalyzer: cannot find interface with IPv4 address of '" + interfaceIPAddr + "'");
+		{
+			errorInfo = "TrafficAnalyzer: cannot find interface with IPv4 address of '" + interfaceIPAddr + "'";
+			return false;
+		}
 
 		if (!dev->open())
-			throw std::runtime_error("TrafficAnalyzer: cannot open device");
+		{
+			errorInfo = "TrafficAnalyzer: cannot open device";
+			return false;
+		}
 
 		std::string filterAsString;
 		filter.parseToString(filterAsString);
 
 		if (!dev->setFilter(filter))
 		{
+			errorInfo = "TrafficAnalyzer: cannot set filter '" + filterAsString + "'";
 			dev->close();
-			throw std::runtime_error("TrafficAnalyzer: cannot set filter '" + filterAsString + "'");
+			return false;
 		}
 
 		BOOST_LOG_TRIVIAL(info) << "TrafficAnalyzer filter: '" << filterAsString << "'";
+		return true;
 	}
 
 	~TrafficAnalyzer() { dev->close(); }

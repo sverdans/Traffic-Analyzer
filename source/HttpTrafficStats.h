@@ -17,10 +17,11 @@
 #include "ITrafficStats.h"
 #include "HostInfo.h"
 
+/// \brief
 class HttpTrafficStats : public ITrafficStats
 {
 private:
-	std::map<std::string, HostInfo> stat;
+	std::map<std::string, HostInfo> stat; ///< Словарь, где ключ это IP адрес хоста, значение объект HostInfo
 
 public:
 	HttpTrafficStats(const std::string &interfaceIpAddr)
@@ -46,7 +47,6 @@ public:
 
 	std::string toJsonString() override
 	{
-		std::stringstream ss;
 		nlohmann::json jsonStat = nlohmann::json::object();
 		jsonStat["hosts"] = nlohmann::json::array();
 
@@ -67,7 +67,9 @@ public:
 			jsonStat["hosts"].push_back(hostJson);
 		}
 
+		std::stringstream ss;
 		ss << jsonStat << std::endl;
+
 		return ss.str();
 	}
 

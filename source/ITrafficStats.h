@@ -3,10 +3,11 @@
 
 #include "Packet.h"
 
+/// \brief Интерфейс, определяющий методы обработки полученных пакетов и вывода статистики
 class ITrafficStats
 {
 protected:
-	std::string interfaceIpAddr;
+	std::string interfaceIpAddr; ///< Ip адрес интерфейса, для которого собирается статистика
 
 public:
 	ITrafficStats(const std::string &interfaceIpAddr) : interfaceIpAddr(interfaceIpAddr) {}

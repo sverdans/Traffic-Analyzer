@@ -31,26 +31,21 @@ int main(int argc, char **argv)
 		return 0;
 
 	BOOST_LOG_TRIVIAL(debug) << "App initial state: "
-							 << "{ interfaceIpAddr: " << options.interfaceIPAddr << ", "
+							 << "{ interfaceIpAddr: " << options.interfaceIpAddr << ", "
 							 << "executionTime: " << options.executionTime << ", "
 							 << "updatePeriod: " << options.updatePeriod << " }";
 
 	pcpp::ApplicationEventHandler::getInstance().onApplicationInterrupted(app::onApplicationInterrupted, &options.shouldClose);
 
-	TrafficAnalyzer<HttpTrafficStats> *httpAnalyzer{nullptr};
+	TrafficAnalyzer<HttpTrafficStats> httpAnalyzer(options.interfaceIpAddr);
 	std::vector<pcpp::GeneralFilter *> portFilterVec = {
 		new pcpp::PortFilter(80, pcpp::SRC_OR_DST),
 		new pcpp::PortFilter(443, pcpp::SRC_OR_DST)};
 
-	try
+	std::string httpAnalyzerInitInfo;
+	if (!httpAnalyzer.initialize(portFilterVec, httpAnalyzerInitInfo))
 	{
-		httpAnalyzer = new TrafficAnalyzer<HttpTrafficStats>(options.interfaceIPAddr, portFilterVec);
-	}
-	catch (std::exception &e)
-	{
-		BOOST_LOG_TRIVIAL(fatal) << "TrafficAnalyzer creating exception: " << e.what() << std::endl;
-		delete httpAnalyzer;
-
+		BOOST_LOG_TRIVIAL(fatal) << "TrafficAnalyzer creating exception: " << httpAnalyzerInitInfo << std::endl;
 		for (auto it : portFilterVec)
 			delete it;
 
@@ -63,7 +58,7 @@ int main(int argc, char **argv)
 		{
 			res.set_header("content-type", "application/json");
 			BOOST_LOG_TRIVIAL(debug) << "Server received a request GET /stat" << std::endl;
-			res << httpAnalyzer->getJsonStat();
+			res << httpAnalyzer.getJsonStat();
 		});
 
 	auto server = served::net::server("127.0.0.1", "8080", mux, false);
@@ -71,25 +66,24 @@ int main(int argc, char **argv)
 
 	printf("Use this to get statistics in JSON format: curl \"http://localhost:8080/stat\"\n");
 
-	httpAnalyzer->startCapture();
+	httpAnalyzer.startCapture();
 
 	while (!options.shouldClose && options.executionTime > 0)
 	{
 		pcpp::multiPlatformSleep(std::min(options.updatePeriod, options.executionTime));
-		printf("%s", httpAnalyzer->getPlaneTextStat().c_str());
+		printf("%s", httpAnalyzer.getPlaneTextStat().c_str());
 		printf("---------------------------------------------------------------------------------------------------------------------------------\n");
 		options.executionTime -= options.updatePeriod;
 	}
 
 	server.stop();
-	httpAnalyzer->stopCapture();
+	httpAnalyzer.stopCapture();
 
 	printf("--------------------------------------------------------------RESULTS------------------------------------------------------------\n");
-	printf("%s", httpAnalyzer->getPlaneTextStat().c_str());
+	printf("%s", httpAnalyzer.getPlaneTextStat().c_str());
 	printf("-----------------------------------------------------------JSON-RESULTS----------------------------------------------------------\n");
-	printf("%s", httpAnalyzer->getJsonStat().c_str());
+	printf("%s", httpAnalyzer.getJsonStat().c_str());
 
-	delete httpAnalyzer;
 	for (auto it : portFilterVec)
 		delete it;
 

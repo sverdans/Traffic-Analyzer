@@ -3,18 +3,22 @@ cmake_minimum_required(VERSION 3.22 FATAL_ERROR)
 find_package(Doxygen)
 
 if(DOXYGEN_FOUND)
-#	set(DOXYGEN_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/docs)
-#	set(doxy_html_index_file 	 ${PROJECT_SOURCE_DIR}/docs/html/index.html)
-#	set(doxy_output_root     	 ${PROJECT_SOURCE_DIR}/docs)
+	set(DOXYGEN_GENERATE_MAN NO)
+	set(DOXYGEN_GENERATE_HTML YES)
+	set(DOXYGEN_OUTPUT_LANGUAGE Russian)
+	set(DOXYGEN_SHOW_NAMESPACES YES)
+	set(DOXYGEN_EXTRACT_ALL YES)
+	set(DOXYGEN_USE_MDFILE_AS_MAINPAGE README.md)
 
-	doxygen_add_docs(documentation ALL ${PROJECT_SOURCE_DIR}/source ${PROJECT_SOURCE_DIR}/README.md)
+	doxygen_add_docs(docsbuild ALL ${PROJECT_SOURCE_DIR}/source ${PROJECT_SOURCE_DIR}/README.md)
+	execute_process(COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.docsbuild)
 
-	execute_process(COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_SOURCE_DIR}/build/docs/Doxyfile.documentation)
-
+	set(DOXYGEN_OUTPUT_DIRECTORY docs)
+	doxygen_add_docs(ghpages ALL source README.md)
 	execute_process(
 		COMMAND ${CMAKE_COMMAND} -E copy
-		${PROJECT_SOURCE_DIR}/build/docs/Doxyfile.documentation
-		${PROJECT_SOURCE_DIR}/Doxyfile)
+		${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.ghpages
+		${PROJECT_SOURCE_DIR}/Doxyfile.ghpages)
 	
 else(DOXYGEN_FOUND)
 	message(STATUS "WARNING: Doxygen not found - Documentation will not be created")
