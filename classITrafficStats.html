@@ -70,7 +70,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Интерфейс, определяющий методы обработки полученных пакетов и вывода статистики  
+<p>Интерфейс, определяющий методы обработки полученных пакетов и вывода статистики Обязывает наследников переопределить абстактные методы  
  <a href="classITrafficStats.html#details">Подробнее...</a></p>
 
 <p><code>#include &lt;<a class="el" href="ITrafficStats_8h_source.html">ITrafficStats.h</a>&gt;</code></p>
@@ -80,7 +80,7 @@ $(function() {
  <div class="center">
   <img src="classITrafficStats.png" usemap="#ITrafficStats_map" alt=""/>
   <map id="ITrafficStats_map" name="ITrafficStats_map">
-<area href="classHttpTrafficStats.html" alt="HttpTrafficStats" shape="rect" coords="0,56,98,80"/>
+<area href="classHttpTrafficStats.html" title="Класс, определяющий формат вывода статистики и обработку пакетов HTTP трафика" alt="HttpTrafficStats" shape="rect" coords="0,56,98,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -91,22 +91,26 @@ $(function() {
 <tr class="memitem:a065893e02ac13cf3398f3a4960eeeb54"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classITrafficStats.html#a065893e02ac13cf3398f3a4960eeeb54">~ITrafficStats</a> ()</td></tr>
 <tr class="separator:a065893e02ac13cf3398f3a4960eeeb54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afda8c4e958003da79021dacd681b0605"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classITrafficStats.html#afda8c4e958003da79021dacd681b0605">toString</a> ()=0</td></tr>
+<tr class="memdesc:afda8c4e958003da79021dacd681b0605"><td class="mdescLeft">&#160;</td><td class="mdescRight">Возвращает статистику об обработанных пакетах в виде строки  <a href="classITrafficStats.html#afda8c4e958003da79021dacd681b0605">Подробнее...</a><br /></td></tr>
 <tr class="separator:afda8c4e958003da79021dacd681b0605"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d4d65e13d8fca9bdb32a637f725ee18"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classITrafficStats.html#a2d4d65e13d8fca9bdb32a637f725ee18">toJsonString</a> ()=0</td></tr>
+<tr class="memdesc:a2d4d65e13d8fca9bdb32a637f725ee18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Возвращает статистику об обработанных пакетах в формате JSON.  <a href="classITrafficStats.html#a2d4d65e13d8fca9bdb32a637f725ee18">Подробнее...</a><br /></td></tr>
 <tr class="separator:a2d4d65e13d8fca9bdb32a637f725ee18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5e6425da7fe4ef364d9d9a275701459"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classITrafficStats.html#ad5e6425da7fe4ef364d9d9a275701459">addPacket</a> (const pcpp::Packet &amp;packet)=0</td></tr>
+<tr class="memdesc:ad5e6425da7fe4ef364d9d9a275701459"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обрабатывает полученный пакет, записывает данные о нём в статистку  <a href="classITrafficStats.html#ad5e6425da7fe4ef364d9d9a275701459">Подробнее...</a><br /></td></tr>
 <tr class="separator:ad5e6425da7fe4ef364d9d9a275701459"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2af52d661389f898df8e93b74111678a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classITrafficStats.html#a2af52d661389f898df8e93b74111678a">clear</a> ()=0</td></tr>
+<tr class="memdesc:a2af52d661389f898df8e93b74111678a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Очищает собранную статистку  <a href="classITrafficStats.html#a2af52d661389f898df8e93b74111678a">Подробнее...</a><br /></td></tr>
 <tr class="separator:a2af52d661389f898df8e93b74111678a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Защищенные данные</h2></td></tr>
 <tr class="memitem:ae12a5998955619b5d7906464a4bec3fd"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classITrafficStats.html#ae12a5998955619b5d7906464a4bec3fd">interfaceIpAddr</a></td></tr>
-<tr class="memdesc:ae12a5998955619b5d7906464a4bec3fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ip адрес интерфейса, для которого собирается статистика  <a href="classITrafficStats.html#ae12a5998955619b5d7906464a4bec3fd">Подробнее...</a><br /></td></tr>
+<tr class="memdesc:ae12a5998955619b5d7906464a4bec3fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">IP-адрес интерфейса, для которого собирается статистика  <a href="classITrafficStats.html#ae12a5998955619b5d7906464a4bec3fd">Подробнее...</a><br /></td></tr>
 <tr class="separator:ae12a5998955619b5d7906464a4bec3fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
-<div class="textblock"><p>Интерфейс, определяющий методы обработки полученных пакетов и вывода статистики </p>
+<div class="textblock"><p>Интерфейс, определяющий методы обработки полученных пакетов и вывода статистики Обязывает наследников переопределить абстактные методы </p>
 </div><h2 class="groupheader">Конструктор(ы)</h2>
 <a id="aa261ce795641bf377a29123f57592dda"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa261ce795641bf377a29123f57592dda">&#9670;&nbsp;</a></span>ITrafficStats()</h2>
@@ -184,6 +188,8 @@ $(function() {
 </table>
 </div><div class="memdoc">
 
+<p>Обрабатывает полученный пакет, записывает данные о нём в статистку </p>
+
 <p>Замещается в <a class="el" href="classHttpTrafficStats.html#a2f9cf8cbb4b224d65ce5ce7efb744017">HttpTrafficStats</a>.</p>
 
 </div>
@@ -210,6 +216,8 @@ $(function() {
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Очищает собранную статистку </p>
 
 <p>Замещается в <a class="el" href="classHttpTrafficStats.html#a1a931130115cf6c04b2733a8f4e4418f">HttpTrafficStats</a>.</p>
 
@@ -238,6 +246,8 @@ $(function() {
 </table>
 </div><div class="memdoc">
 
+<p>Возвращает статистику об обработанных пакетах в формате JSON. </p>
+
 <p>Замещается в <a class="el" href="classHttpTrafficStats.html#a3f1d55c496751d033e5188c48a3cc8bc">HttpTrafficStats</a>.</p>
 
 </div>
@@ -265,6 +275,8 @@ $(function() {
 </table>
 </div><div class="memdoc">
 
+<p>Возвращает статистику об обработанных пакетах в виде строки </p>
+
 <p>Замещается в <a class="el" href="classHttpTrafficStats.html#acc90cd95f08f20331f4110808f180da7">HttpTrafficStats</a>.</p>
 
 </div>
@@ -290,7 +302,7 @@ $(function() {
 </table>
 </div><div class="memdoc">
 
-<p>Ip адрес интерфейса, для которого собирается статистика </p>
+<p>IP-адрес интерфейса, для которого собирается статистика </p>
 
 </div>
 </div>

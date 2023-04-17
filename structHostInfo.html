@@ -70,6 +70,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Структура, хранящая статистику отдельного хоста  
+ <a href="structHostInfo.html#details">Подробнее...</a></p>
+
 <p><code>#include &lt;<a class="el" href="HostInfo_8h_source.html">HostInfo.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -80,17 +83,24 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Открытые атрибуты</h2></td></tr>
 <tr class="memitem:ae9f8677c8340e9611aefb1a5dba9168e"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHostInfo.html#ae9f8677c8340e9611aefb1a5dba9168e">inPackets</a> {0}</td></tr>
+<tr class="memdesc:ae9f8677c8340e9611aefb1a5dba9168e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Количество входящих пакетов  <a href="structHostInfo.html#ae9f8677c8340e9611aefb1a5dba9168e">Подробнее...</a><br /></td></tr>
 <tr class="separator:ae9f8677c8340e9611aefb1a5dba9168e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdac7094e0592034c01f421551033d3e"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHostInfo.html#acdac7094e0592034c01f421551033d3e">outPackets</a> {0}</td></tr>
+<tr class="memdesc:acdac7094e0592034c01f421551033d3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Количество исходящих пакетов  <a href="structHostInfo.html#acdac7094e0592034c01f421551033d3e">Подробнее...</a><br /></td></tr>
 <tr class="separator:acdac7094e0592034c01f421551033d3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5787b35802acfca7fbf9ff6af9c2fff0"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHostInfo.html#a5787b35802acfca7fbf9ff6af9c2fff0">inTraffic</a> {0}</td></tr>
+<tr class="memdesc:a5787b35802acfca7fbf9ff6af9c2fff0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Входящий трафик  <a href="structHostInfo.html#a5787b35802acfca7fbf9ff6af9c2fff0">Подробнее...</a><br /></td></tr>
 <tr class="separator:a5787b35802acfca7fbf9ff6af9c2fff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6665599e3f2442522f06157d4059515f"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHostInfo.html#a6665599e3f2442522f06157d4059515f">outTraffic</a> {0}</td></tr>
+<tr class="memdesc:a6665599e3f2442522f06157d4059515f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Исходяший трафик  <a href="structHostInfo.html#a6665599e3f2442522f06157d4059515f">Подробнее...</a><br /></td></tr>
 <tr class="separator:a6665599e3f2442522f06157d4059515f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14b226a94411562d347494fca90b3a5e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHostInfo.html#a14b226a94411562d347494fca90b3a5e">name</a></td></tr>
+<tr class="memdesc:a14b226a94411562d347494fca90b3a5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя хоста  <a href="structHostInfo.html#a14b226a94411562d347494fca90b3a5e">Подробнее...</a><br /></td></tr>
 <tr class="separator:a14b226a94411562d347494fca90b3a5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Методы</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>Структура, хранящая статистику отдельного хоста </p>
+</div><h2 class="groupheader">Методы</h2>
 <a id="a4e65d5bb1b88236adf58919c9fac5129"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4e65d5bb1b88236adf58919c9fac5129">&#9670;&nbsp;</a></span>addPacket()</h2>
 
@@ -124,6 +134,13 @@ $(function() {
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>Размер пакета </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">isInPacket</td><td>Является ли пакет входящим </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -140,6 +157,8 @@ $(function() {
       </table>
 </div><div class="memdoc">
 
+<p>Количество входящих пакетов </p>
+
 </div>
 </div>
 <a id="a5787b35802acfca7fbf9ff6af9c2fff0"></a>
@@ -153,6 +172,8 @@ $(function() {
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Входящий трафик </p>
 
 </div>
 </div>
@@ -168,6 +189,8 @@ $(function() {
       </table>
 </div><div class="memdoc">
 
+<p>Имя хоста </p>
+
 </div>
 </div>
 <a id="acdac7094e0592034c01f421551033d3e"></a>
@@ -182,6 +205,8 @@ $(function() {
       </table>
 </div><div class="memdoc">
 
+<p>Количество исходящих пакетов </p>
+
 </div>
 </div>
 <a id="a6665599e3f2442522f06157d4059515f"></a>
@@ -195,6 +220,8 @@ $(function() {
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Исходяший трафик </p>
 
 </div>
 </div>

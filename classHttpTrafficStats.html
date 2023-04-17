@@ -69,6 +69,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Класс, определяющий формат вывода статистики и обработку пакетов HTTP трафика  
+ <a href="classHttpTrafficStats.html#details">Подробнее...</a></p>
+
 <p><code>#include &lt;<a class="el" href="HttpTrafficStats_8h_source.html">HttpTrafficStats.h</a>&gt;</code></p>
 <div class="dynheader">
 Граф наследования:HttpTrafficStats:</div>
@@ -76,7 +79,7 @@ $(function() {
  <div class="center">
   <img src="classHttpTrafficStats.png" usemap="#HttpTrafficStats_map" alt=""/>
   <map id="HttpTrafficStats_map" name="HttpTrafficStats_map">
-<area href="classITrafficStats.html" title="Интерфейс, определяющий методы обработки полученных пакетов и вывода статистики" alt="ITrafficStats" shape="rect" coords="0,0,98,24"/>
+<area href="classITrafficStats.html" title="Интерфейс, определяющий методы обработки полученных пакетов и вывода статистики Обязывает наследников..." alt="ITrafficStats" shape="rect" coords="0,0,98,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -85,12 +88,16 @@ $(function() {
 <tr class="memitem:af3c55604cdd4eab681438c592aac2445"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHttpTrafficStats.html#af3c55604cdd4eab681438c592aac2445">HttpTrafficStats</a> (const std::string &amp;<a class="el" href="classITrafficStats.html#ae12a5998955619b5d7906464a4bec3fd">interfaceIpAddr</a>)</td></tr>
 <tr class="separator:af3c55604cdd4eab681438c592aac2445"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc90cd95f08f20331f4110808f180da7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHttpTrafficStats.html#acc90cd95f08f20331f4110808f180da7">toString</a> () override</td></tr>
+<tr class="memdesc:acc90cd95f08f20331f4110808f180da7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Возвращает статистику об обработанных пакетах в виде строки  <a href="classHttpTrafficStats.html#acc90cd95f08f20331f4110808f180da7">Подробнее...</a><br /></td></tr>
 <tr class="separator:acc90cd95f08f20331f4110808f180da7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f1d55c496751d033e5188c48a3cc8bc"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHttpTrafficStats.html#a3f1d55c496751d033e5188c48a3cc8bc">toJsonString</a> () override</td></tr>
+<tr class="memdesc:a3f1d55c496751d033e5188c48a3cc8bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Возвращает статистику об обработанных пакетах в формате JSON.  <a href="classHttpTrafficStats.html#a3f1d55c496751d033e5188c48a3cc8bc">Подробнее...</a><br /></td></tr>
 <tr class="separator:a3f1d55c496751d033e5188c48a3cc8bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f9cf8cbb4b224d65ce5ce7efb744017"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHttpTrafficStats.html#a2f9cf8cbb4b224d65ce5ce7efb744017">addPacket</a> (const pcpp::Packet &amp;packet) override</td></tr>
+<tr class="memdesc:a2f9cf8cbb4b224d65ce5ce7efb744017"><td class="mdescLeft">&#160;</td><td class="mdescRight">Метод обрабатывающий пакет  <a href="classHttpTrafficStats.html#a2f9cf8cbb4b224d65ce5ce7efb744017">Подробнее...</a><br /></td></tr>
 <tr class="separator:a2f9cf8cbb4b224d65ce5ce7efb744017"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a931130115cf6c04b2733a8f4e4418f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHttpTrafficStats.html#a1a931130115cf6c04b2733a8f4e4418f">clear</a> () override</td></tr>
+<tr class="memdesc:a1a931130115cf6c04b2733a8f4e4418f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Очищает статистику  <a href="classHttpTrafficStats.html#a1a931130115cf6c04b2733a8f4e4418f">Подробнее...</a><br /></td></tr>
 <tr class="separator:a1a931130115cf6c04b2733a8f4e4418f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classITrafficStats"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classITrafficStats')"><img src="closed.png" alt="-"/>&#160;Открытые члены унаследованные от <a class="el" href="classITrafficStats.html">ITrafficStats</a></td></tr>
 <tr class="memitem:aa261ce795641bf377a29123f57592dda inherit pub_methods_classITrafficStats"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classITrafficStats.html#aa261ce795641bf377a29123f57592dda">ITrafficStats</a> (const std::string &amp;<a class="el" href="classITrafficStats.html#ae12a5998955619b5d7906464a4bec3fd">interfaceIpAddr</a>)</td></tr>
@@ -102,10 +109,12 @@ $(function() {
 Дополнительные унаследованные члены</h2></td></tr>
 <tr class="inherit_header pro_attribs_classITrafficStats"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classITrafficStats')"><img src="closed.png" alt="-"/>&#160;Защищенные данные унаследованные от <a class="el" href="classITrafficStats.html">ITrafficStats</a></td></tr>
 <tr class="memitem:ae12a5998955619b5d7906464a4bec3fd inherit pro_attribs_classITrafficStats"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classITrafficStats.html#ae12a5998955619b5d7906464a4bec3fd">interfaceIpAddr</a></td></tr>
-<tr class="memdesc:ae12a5998955619b5d7906464a4bec3fd inherit pro_attribs_classITrafficStats"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ip адрес интерфейса, для которого собирается статистика  <a href="classITrafficStats.html#ae12a5998955619b5d7906464a4bec3fd">Подробнее...</a><br /></td></tr>
+<tr class="memdesc:ae12a5998955619b5d7906464a4bec3fd inherit pro_attribs_classITrafficStats"><td class="mdescLeft">&#160;</td><td class="mdescRight">IP-адрес интерфейса, для которого собирается статистика  <a href="classITrafficStats.html#ae12a5998955619b5d7906464a4bec3fd">Подробнее...</a><br /></td></tr>
 <tr class="separator:ae12a5998955619b5d7906464a4bec3fd inherit pro_attribs_classITrafficStats"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Конструктор(ы)</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>Класс, определяющий формат вывода статистики и обработку пакетов HTTP трафика </p>
+</div><h2 class="groupheader">Конструктор(ы)</h2>
 <a id="af3c55604cdd4eab681438c592aac2445"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af3c55604cdd4eab681438c592aac2445">&#9670;&nbsp;</a></span>HttpTrafficStats()</h2>
 
@@ -157,6 +166,14 @@ $(function() {
 </table>
 </div><div class="memdoc">
 
+<p>Метод обрабатывающий пакет </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">packet</td><td>Пакет, из который нужно </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Замещает <a class="el" href="classITrafficStats.html#ad5e6425da7fe4ef364d9d9a275701459">ITrafficStats</a>.</p>
 
 </div>
@@ -183,6 +200,8 @@ $(function() {
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Очищает статистику </p>
 
 <p>Замещает <a class="el" href="classITrafficStats.html#a2af52d661389f898df8e93b74111678a">ITrafficStats</a>.</p>
 
@@ -211,6 +230,8 @@ $(function() {
 </table>
 </div><div class="memdoc">
 
+<p>Возвращает статистику об обработанных пакетах в формате JSON. </p>
+
 <p>Замещает <a class="el" href="classITrafficStats.html#a2d4d65e13d8fca9bdb32a637f725ee18">ITrafficStats</a>.</p>
 
 </div>
@@ -237,6 +258,8 @@ $(function() {
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Возвращает статистику об обработанных пакетах в виде строки </p>
 
 <p>Замещает <a class="el" href="classITrafficStats.html#afda8c4e958003da79021dacd681b0605">ITrafficStats</a>.</p>
 

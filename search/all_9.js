@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['name_23',['name',['../structHostInfo.html#a14b226a94411562d347494fca90b3a5e',1,'HostInfo']]]
+  ['onapplicationinterrupted_22',['onApplicationInterrupted',['../namespaceapp.html#a7b24012175242a9d5c2dd3dece035359',1,'app']]],
+  ['operator_3d_23',['operator=',['../classTrafficAnalyzer.html#a8ec42d7750b2e9d49329469a1b714de6',1,'TrafficAnalyzer::operator=(const TrafficAnalyzer &amp;)=delete'],['../classTrafficAnalyzer.html#ad1e0bb187107af580d206a21fccc99fe',1,'TrafficAnalyzer::operator=(TrafficAnalyzer &amp;&amp;other)']]],
+  ['outpackets_24',['outPackets',['../structHostInfo.html#acdac7094e0592034c01f421551033d3e',1,'HostInfo']]],
+  ['outtraffic_25',['outTraffic',['../structHostInfo.html#a6665599e3f2442522f06157d4059515f',1,'HostInfo']]]
 ];
