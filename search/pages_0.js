@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['traffic_2danalyzer_11',['Traffic-Analyzer',['../md_README.html',1,'']]]
+  ['Анализатор_20трафика_84',['Анализатор трафика',['../index.html',1,'']]]
 ];
