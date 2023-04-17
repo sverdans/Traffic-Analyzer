@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <memory>
 
 #include <boost/log/trivial.hpp>
 #include <served/served.hpp>
@@ -11,8 +12,24 @@
 #include "TrafficAnalyzer.h"
 #include "HttpTrafficStats.h"
 
+class A
+{
+public:
+	virtual void print() { std::cout << "A" << std::endl; }
+};
+
+class B : public A
+{
+public:
+	void print() override { std::cout << "B" << std::endl; }
+};
+
 int main(int argc, char **argv)
 {
+	std::unique_ptr<A> pA;
+	pA = std::make_unique<B>();
+	pA->print();
+
 	app::setupLogger();
 
 	app::ProgramOptions options;
@@ -37,13 +54,14 @@ int main(int argc, char **argv)
 
 	pcpp::ApplicationEventHandler::getInstance().onApplicationInterrupted(app::onApplicationInterrupted, &options.shouldClose);
 
-	TrafficAnalyzer<HttpTrafficStats> httpAnalyzer(options.interfaceIpAddr);
+	TrafficAnalyzer httpAnalyzer;
+
 	std::vector<pcpp::GeneralFilter *> portFilterVec = {
 		new pcpp::PortFilter(80, pcpp::SRC_OR_DST),
 		new pcpp::PortFilter(443, pcpp::SRC_OR_DST)};
 
 	std::string httpAnalyzerInitInfo;
-	if (!httpAnalyzer.initialize(portFilterVec, httpAnalyzerInitInfo))
+	if (!httpAnalyzer.initializeAs<HttpTrafficStats>(options.interfaceIpAddr, portFilterVec, httpAnalyzerInitInfo))
 	{
 		BOOST_LOG_TRIVIAL(fatal) << "TrafficAnalyzer creating exception: " << httpAnalyzerInitInfo << std::endl;
 		for (auto it : portFilterVec)
