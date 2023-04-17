@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['tojsonstring_70',['toJsonString',['../classHttpTrafficStats.html#a3f1d55c496751d033e5188c48a3cc8bc',1,'HttpTrafficStats::toJsonString()'],['../classITrafficStats.html#a2d4d65e13d8fca9bdb32a637f725ee18',1,'ITrafficStats::toJsonString()']]],
-  ['tostring_71',['toString',['../classHttpTrafficStats.html#acc90cd95f08f20331f4110808f180da7',1,'HttpTrafficStats::toString()'],['../classITrafficStats.html#afda8c4e958003da79021dacd681b0605',1,'ITrafficStats::toString()']]],
-  ['trafficanalyzer_72',['TrafficAnalyzer',['../classTrafficAnalyzer.html#aca4a238734d68828975ee33949923bf7',1,'TrafficAnalyzer::TrafficAnalyzer(const std::string interfaceIPAddr)'],['../classTrafficAnalyzer.html#ab291312dccf7c6c79e1143333b630602',1,'TrafficAnalyzer::TrafficAnalyzer(const TrafficAnalyzer &amp;)=delete'],['../classTrafficAnalyzer.html#a777c7caf82b5491dd8851d7e0ab983ce',1,'TrafficAnalyzer::TrafficAnalyzer(TrafficAnalyzer &amp;&amp;other)']]]
+  ['setuplogger_75',['setupLogger',['../namespaceapp.html#a65f02df4a1eb9a8ee962fcacdd76a170',1,'app']]],
+  ['startcapture_76',['startCapture',['../classTrafficAnalyzer.html#a3f4e7c1079bcf313d81cb557266b5b60',1,'TrafficAnalyzer']]],
+  ['stopcapture_77',['stopCapture',['../classTrafficAnalyzer.html#adc6fc7b2e2eb8057d34e8687c28ba767',1,'TrafficAnalyzer']]]
 ];

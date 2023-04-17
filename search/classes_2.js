@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['programoptions_44',['ProgramOptions',['../structapp_1_1ProgramOptions.html',1,'app']]]
+  ['hostinfo_47',['HostInfo',['../structHostInfo.html',1,'']]],
+  ['httptrafficstats_48',['HttpTrafficStats',['../classHttpTrafficStats.html',1,'']]]
 ];

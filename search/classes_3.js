@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['trafficanalyzer_45',['TrafficAnalyzer',['../classTrafficAnalyzer.html',1,'']]]
+  ['itrafficstats_49',['ITrafficStats',['../classITrafficStats.html',1,'']]]
 ];

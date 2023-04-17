@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['main_62',['main',['../main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main.cpp']]]
+  ['initializeas_67',['initializeAs',['../classTrafficAnalyzer.html#a83505611a0146108a4de6e04ba571bbe',1,'TrafficAnalyzer']]],
+  ['itrafficstats_68',['ITrafficStats',['../classITrafficStats.html#aa261ce795641bf377a29123f57592dda',1,'ITrafficStats']]]
 ];
