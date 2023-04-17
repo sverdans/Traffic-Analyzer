@@ -8,7 +8,7 @@
 
 - Количесвто входящих и исходящих пакетов
 - Входящий и исходящий трафик
-- Имя хоста (если имя не было выявлено, булет выведен IP адрес)
+- Имя хоста (если имя не было выявлено, будет выведен IP адрес)
 
 Выходная статистика выглядит следующим образом:
 
@@ -20,6 +20,12 @@ avatars.githubusercontent.com             71 packets (OUT 37     |     34 IN) tr
 contile.services.mozilla.com              21 packets (OUT 12     |      9 IN) traffic:     7599 [bytes] (OUT 1839     |   5760 IN)
 push.services.mozilla.com                 34 packets (OUT 19     |     15 IN) traffic:    10776 [bytes] (OUT 3545     |   7231 IN)
 ```
+
+## Установка
+
+Для работы программы, необходимо чтобы на устройстве были установлены библиотеки Boost и Served.
+Served можно установить, запустив файл served-installer.sh, который находится в корневой директории проекта.
+Остальные библиотеки будут автоматически установлены в папку external.
 
 ## Использование
 
@@ -56,8 +62,3 @@ Use this to get statistics in JSON format: curl "http://localhost:8080/stat"
 - [`Served`](http://underthehood.meltwater.com/served/)
 - [`Nlohmann JSON`](https://json.nlohmann.me/)
 
-## Установка
-
-Для работы программы, необходимо чтобы на устройстве были установлены библиотеки Boost и Served.
-Served можно установить, запустив файл served-installer.sh, который находится в корневой директории проекта.
-Остальные библиотеки будут атоматически установлены в папку external.

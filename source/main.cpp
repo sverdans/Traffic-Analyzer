@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <memory>
 
 #include <boost/log/trivial.hpp>
 #include <served/served.hpp>
@@ -12,24 +11,8 @@
 #include "TrafficAnalyzer.h"
 #include "HttpTrafficStats.h"
 
-class A
-{
-public:
-	virtual void print() { std::cout << "A" << std::endl; }
-};
-
-class B : public A
-{
-public:
-	void print() override { std::cout << "B" << std::endl; }
-};
-
 int main(int argc, char **argv)
 {
-	std::unique_ptr<A> pA;
-	pA = std::make_unique<B>();
-	pA->print();
-
 	app::setupLogger();
 
 	app::ProgramOptions options;
@@ -63,10 +46,11 @@ int main(int argc, char **argv)
 	std::string httpAnalyzerInitInfo;
 	if (!httpAnalyzer.initializeAs<HttpTrafficStats>(options.interfaceIpAddr, portFilterVec, httpAnalyzerInitInfo))
 	{
-		BOOST_LOG_TRIVIAL(fatal) << "TrafficAnalyzer creating exception: " << httpAnalyzerInitInfo << std::endl;
+		BOOST_LOG_TRIVIAL(fatal) << "TrafficAnalyzer initialization error: " << httpAnalyzerInitInfo << std::endl;
 		for (auto it : portFilterVec)
 			delete it;
 
+		httpAnalyzer.finalize();
 		return -1;
 	}
 
@@ -90,17 +74,19 @@ int main(int argc, char **argv)
 	{
 		pcpp::multiPlatformSleep(std::min(options.updatePeriod, options.executionTime));
 		printf("%s", httpAnalyzer.getPlaneTextStat().c_str());
-		printf("---------------------------------------------------------------------------------------------------------------------------------\n");
+		printf("----------------------------------------------------------------------------------------------------------------------------------\n");
 		options.executionTime -= options.updatePeriod;
 	}
 
 	server.stop();
 	httpAnalyzer.stopCapture();
 
-	printf("--------------------------------------------------------------RESULTS------------------------------------------------------------\n");
+	printf("--------------------------------------------------------------RESULTS-------------------------------------------------------------\n");
 	printf("%s", httpAnalyzer.getPlaneTextStat().c_str());
-	printf("-----------------------------------------------------------JSON-RESULTS----------------------------------------------------------\n");
+	printf("-----------------------------------------------------------JSON-RESULTS-----------------------------------------------------------\n");
 	printf("%s", httpAnalyzer.getJsonStat().c_str());
+
+	httpAnalyzer.finalize();
 
 	for (auto it : portFilterVec)
 		delete it;

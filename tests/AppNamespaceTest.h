@@ -31,5 +31,5 @@ TEST(ComandLineParsingTest, TestComandLineWithRightParams)
 	EXPECT_EQ(expectation.shouldClose, result.shouldClose);
 	EXPECT_EQ(expectation.updatePeriod, result.updatePeriod);
 	EXPECT_EQ(expectation.executionTime, result.executionTime);
-	EXPECT_EQ(expectation.interfaceIPAddr, result.interfaceIPAddr);
+	EXPECT_EQ(expectation.interfaceIpAddr, result.interfaceIpAddr);
 }

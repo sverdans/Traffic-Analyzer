@@ -14,16 +14,21 @@
 
 #include "ITrafficStats.h"
 
+/**
+ * \brief Класс реализующий перехват пакетов из живого трафика и их анализ
+ *
+ * Производит захват и обработку пакетов в отдельном потоке
+ */
 class TrafficAnalyzer
 {
 private:
-	std::string interfaceIpAddr; ///< Ip адрес интерфейса, для которого собирается статистика
+	std::string interfaceIpAddr; ///< IP-адрес интерфейса, для которого собирается статистика
 
 	pcpp::OrFilter filter;
-	pcpp::PcapLiveDevice *dev{nullptr};
+	pcpp::PcapLiveDevice *dev;
 
-	std::unique_ptr<std::mutex> collectorMutex;
-	std::unique_ptr<ITrafficStats> trafficStats;
+	std::unique_ptr<std::mutex> collectorMutex;	 ///< Объект синхронизирущий работу со статистикой из рахных потоков
+	std::unique_ptr<ITrafficStats> trafficStats; ///< Объект отвечающий за обработку траффика и вывод статистики в формате строки
 
 	static void onPacketArrives(pcpp::RawPacket *packet, pcpp::PcapLiveDevice *dev, void *cookie)
 	{
@@ -33,12 +38,8 @@ private:
 	}
 
 public:
-	TrafficAnalyzer() : collectorMutex(std::make_unique<std::mutex>()) {}
-	~TrafficAnalyzer()
-	{
-		if (dev)
-			dev->close();
-	}
+	TrafficAnalyzer() : dev(nullptr), collectorMutex(std::make_unique<std::mutex>()) {}
+	~TrafficAnalyzer() { finalize(); }
 
 	TrafficAnalyzer(const TrafficAnalyzer &) = delete;
 	TrafficAnalyzer &operator=(const TrafficAnalyzer &) = delete;
@@ -67,17 +68,20 @@ public:
 		return *this;
 	}
 
+	/// \brief Инициализирующий метод
+	/// \tparam T Тип который будет иметь trafficStats
+	/// \param[in] interfaceIpAddr IP-адрес устройства, для которого будет собираться статистика
+	/// \param[in] portFilterVec Вектор портов, по которым будет происходить анализ пакетов
+	/// \param[out] errorInfo В случае ошибки инициализации, сюда будет записана причина
+	/// \return True - если инициализация прошла усешно, иначе False
 	template <class T>
 	bool initializeAs(const std::string &interfaceIpAddr,
 					  std::vector<pcpp::GeneralFilter *> &portFilterVec,
 					  std::string &errorInfo)
 	{
 		this->interfaceIpAddr = interfaceIpAddr;
-		trafficStats = std::make_unique<T>(interfaceIpAddr);
 
-		filter = pcpp::OrFilter(portFilterVec);
 		dev = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDeviceByIp(interfaceIpAddr);
-
 		if (!dev)
 		{
 			errorInfo = "TrafficAnalyzer: cannot find interface with IPv4 address of '" + interfaceIpAddr + "'";
@@ -90,6 +94,7 @@ public:
 			return false;
 		}
 
+		filter = pcpp::OrFilter(portFilterVec);
 		std::string filterAsString;
 		filter.parseToString(filterAsString);
 
@@ -102,27 +107,54 @@ public:
 
 		BOOST_LOG_TRIVIAL(info) << "TrafficAnalyzer filter: '" << filterAsString << "'";
 
+		trafficStats = std::make_unique<T>(interfaceIpAddr);
+
 		return true;
 	}
 
-	void finalize() { dev->close(); }
+	/// \brief Освобождения ресурсы, занимаемымы объектом
+	void finalize()
+	{
+		if (dev)
+		{
+			if (dev->captureActive())
+				dev->stopCapture();
 
-	void startCapture() { dev->startCapture(onPacketArrives, this); }
+			if (dev->isOpened())
+				dev->close();
+		}
 
+		if (trafficStats.get())
+			trafficStats->clear();
+	}
+
+	/// \brief Начинает захват пакетов из живого трафика
+	void startCapture()
+	{
+		if (dev && dev->isOpened())
+			dev->startCapture(onPacketArrives, this);
+		else
+			BOOST_LOG_TRIVIAL(warning) << "TrafficAnalyzer trying to startCapture, but device was not opened or nullptr";
+	}
+
+	/// \brief Останавливает захват пакетов
 	void stopCapture() { dev->stopCapture(); }
 
+	/// \brief Возвращает собранную статистику в виде строки
 	std::string getPlaneTextStat()
 	{
 		std::lock_guard<std::mutex> guard(*collectorMutex);
 		return trafficStats->toString();
 	}
 
+	/// \brief Возвращает собранную статистику в формате JSON строки
 	std::string getJsonStat()
 	{
 		std::lock_guard<std::mutex> guard(*collectorMutex);
 		return trafficStats->toJsonString();
 	}
 
+	/// \brief Очищает собранную статистику
 	void clearStats()
 	{
 		std::lock_guard<std::mutex> guard(*collectorMutex);

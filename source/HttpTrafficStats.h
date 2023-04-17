@@ -17,16 +17,16 @@
 #include "ITrafficStats.h"
 #include "HostInfo.h"
 
-/// \brief
+/// \brief Класс, определяющий формат вывода статистики и обработку пакетов HTTP трафика
 class HttpTrafficStats : public ITrafficStats
 {
 private:
 	std::map<std::string, HostInfo> stat; ///< Словарь, где ключ это IP адрес хоста, значение объект HostInfo
 
 public:
-	HttpTrafficStats(const std::string &interfaceIpAddr)
-		: ITrafficStats(interfaceIpAddr) {}
+	HttpTrafficStats(const std::string &interfaceIpAddr) : ITrafficStats(interfaceIpAddr) {}
 
+	/// \brief Возвращает статистику об обработанных пакетах в виде строки
 	std::string toString() override
 	{
 		std::stringstream ss;
@@ -45,6 +45,7 @@ public:
 		return ss.str();
 	}
 
+	/// \brief Возвращает статистику об обработанных пакетах в формате JSON
 	std::string toJsonString() override
 	{
 		nlohmann::json jsonStat = nlohmann::json::object();
@@ -73,6 +74,8 @@ public:
 		return ss.str();
 	}
 
+	/// @brief Метод обрабатывающий пакет
+	/// \param[in] packet Пакет, из который нужно
 	void addPacket(const pcpp::Packet &packet) override
 	{
 		auto *ipLayer = packet.getLayerOfType<pcpp::IPLayer>();
@@ -155,6 +158,7 @@ public:
 		}
 	}
 
+	/// \brief Очищает статистику
 	void clear() override
 	{
 		stat.clear();

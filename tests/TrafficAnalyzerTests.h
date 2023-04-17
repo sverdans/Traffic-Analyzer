@@ -8,7 +8,7 @@
 
 struct TrafficAnalyzerClassTest : public testing::Test
 {
-	TrafficAnalyzer<HttpTrafficStats> *ta{nullptr};
+	TrafficAnalyzer analyzer;
 	std::vector<pcpp::GeneralFilter *> vec = {};
 	std::string realIp;
 
@@ -19,21 +19,20 @@ struct TrafficAnalyzerClassTest : public testing::Test
 
 	void TearDown()
 	{
-		if (ta)
-			delete ta;
+		analyzer.finalize();
 	}
 };
 
 TEST_F(TrafficAnalyzerClassTest, TestCreateWithNonexistentIp)
 {
-	EXPECT_ANY_THROW(ta = new TrafficAnalyzer<HttpTrafficStats>("999.999.999.999", vec));
-	delete ta;
-	ta = nullptr;
+	std::string errorInfo;
+	EXPECT_EQ(false, analyzer.initializeAs<HttpTrafficStats>("255.255.255.255", vec, errorInfo));
+	analyzer.finalize();
 }
 
 TEST_F(TrafficAnalyzerClassTest, TestCreateWithExistentIp)
 {
-	EXPECT_NO_THROW(ta = new TrafficAnalyzer<HttpTrafficStats>(realIp, vec));
-	delete ta;
-	ta = nullptr;
+	std::string errorInfo;
+	EXPECT_EQ(true, analyzer.initializeAs<HttpTrafficStats>(realIp, vec, errorInfo));
+	analyzer.finalize();
 }
