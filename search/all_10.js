@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['Анализатор_20трафика_41',['Анализатор трафика',['../index.html',1,'']]]
+  ['_7eitrafficstats_45',['~ITrafficStats',['../classITrafficStats.html#a065893e02ac13cf3398f3a4960eeeb54',1,'ITrafficStats']]],
+  ['_7etrafficanalyzer_46',['~TrafficAnalyzer',['../classTrafficAnalyzer.html#a45c94d363918bf6acca16d75df3165e0',1,'TrafficAnalyzer']]]
 ];

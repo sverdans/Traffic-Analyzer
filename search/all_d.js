@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['tojsonstring_34',['toJsonString',['../classHttpTrafficStats.html#a3f1d55c496751d033e5188c48a3cc8bc',1,'HttpTrafficStats::toJsonString()'],['../classITrafficStats.html#a2d4d65e13d8fca9bdb32a637f725ee18',1,'ITrafficStats::toJsonString()']]],
-  ['tostring_35',['toString',['../classHttpTrafficStats.html#acc90cd95f08f20331f4110808f180da7',1,'HttpTrafficStats::toString()'],['../classITrafficStats.html#afda8c4e958003da79021dacd681b0605',1,'ITrafficStats::toString()']]],
-  ['trafficanalyzer_36',['TrafficAnalyzer',['../classTrafficAnalyzer.html',1,'TrafficAnalyzer'],['../classTrafficAnalyzer.html#a4e9673309bf4857d8e997c80f950b7ad',1,'TrafficAnalyzer::TrafficAnalyzer()'],['../classTrafficAnalyzer.html#ac5b4aa956b07dfbecf20f47fcf3cae5a',1,'TrafficAnalyzer::TrafficAnalyzer(const TrafficAnalyzer &amp;)=delete'],['../classTrafficAnalyzer.html#ac7f49c95e1a1ea1677f3f2cb55b769bd',1,'TrafficAnalyzer::TrafficAnalyzer(TrafficAnalyzer &amp;&amp;other)']]],
-  ['trafficanalyzer_2eh_37',['TrafficAnalyzer.h',['../TrafficAnalyzer_8h.html',1,'']]]
+  ['setuplogger_34',['setupLogger',['../namespaceapp.html#a65f02df4a1eb9a8ee962fcacdd76a170',1,'app']]],
+  ['shouldclose_35',['shouldClose',['../structapp_1_1ProgramOptions.html#a6410238df5184d930f5f25e37791ebcb',1,'app::ProgramOptions']]],
+  ['startcapture_36',['startCapture',['../classTrafficAnalyzer.html#a3f4e7c1079bcf313d81cb557266b5b60',1,'TrafficAnalyzer']]],
+  ['stat_37',['stat',['../classHttpTrafficStats.html#adc56691def0ca2dcef55f04731681008',1,'HttpTrafficStats']]],
+  ['stopcapture_38',['stopCapture',['../classTrafficAnalyzer.html#adc6fc7b2e2eb8057d34e8687c28ba767',1,'TrafficAnalyzer']]]
 ];

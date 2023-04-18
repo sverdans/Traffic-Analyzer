@@ -71,165 +71,193 @@ $(function() {
 <div class="contents">
 <a href="TrafficAnalyzer_8h.html">См. документацию.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;type_traits&gt;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;mutex&gt;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;mutex&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;boost/log/trivial.hpp&gt;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;boost/log/trivial.hpp&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;PcapLiveDeviceList.h&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;PacketUtils.h&quot;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;Packet.h&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;PcapLiveDeviceList.h&quot;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;PacketUtils.h&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;Packet.h&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="ITrafficStats_8h.html">ITrafficStats.h</a>&quot;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="ITrafficStats_8h.html">ITrafficStats.h</a>&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html">   22</a></span>&#160;<span class="keyword">class </span><a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    std::string interfaceIpAddr; </div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html">   19</a></span>&#160;<span class="keyword">class </span><a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;{</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a3493fa526dc2fba686f496527e529936">   22</a></span>&#160;    std::string <a class="code" href="classTrafficAnalyzer.html#a3493fa526dc2fba686f496527e529936">interfaceIpAddr</a>; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#adbfc0aa4a3c15e36bedcfa83cb5835c1">   24</a></span>&#160;    pcpp::OrFilter <a class="code" href="classTrafficAnalyzer.html#adbfc0aa4a3c15e36bedcfa83cb5835c1">filter</a>;</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">   25</a></span>&#160;    pcpp::PcapLiveDevice *<a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    pcpp::OrFilter filter;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    pcpp::PcapLiveDevice *dev;</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a558c4d38d1882d87d3ccc5de5805a87e">   27</a></span>&#160;    std::unique_ptr&lt;std::mutex&gt; <a class="code" href="classTrafficAnalyzer.html#a558c4d38d1882d87d3ccc5de5805a87e">collectorMutex</a>;  </div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">   28</a></span>&#160;    std::unique_ptr&lt;ITrafficStats&gt; <a class="code" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">trafficStats</a>; </div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    std::unique_ptr&lt;std::mutex&gt; collectorMutex;  </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    std::unique_ptr&lt;ITrafficStats&gt; trafficStats; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> onPacketArrives(pcpp::RawPacket *packet, pcpp::PcapLiveDevice *dev, <span class="keywordtype">void</span> *cookie)</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> *analyzer = <span class="keyword">static_cast&lt;</span><a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> *<span class="keyword">&gt;</span>(cookie);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        std::lock_guard&lt;std::mutex&gt; guard(*analyzer-&gt;collectorMutex);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        analyzer-&gt;trafficStats-&gt;addPacket(pcpp::Packet(packet));</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    }</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a4e9673309bf4857d8e997c80f950b7ad">   41</a></span>&#160;    <a class="code" href="classTrafficAnalyzer.html#a4e9673309bf4857d8e997c80f950b7ad">TrafficAnalyzer</a>() : dev(nullptr), collectorMutex(std::make_unique&lt;std::mutex&gt;()) {}</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a45c94d363918bf6acca16d75df3165e0">   42</a></span>&#160;    <a class="code" href="classTrafficAnalyzer.html#a45c94d363918bf6acca16d75df3165e0">~TrafficAnalyzer</a>() { <a class="code" href="classTrafficAnalyzer.html#acc91b7d71bb3f1fe5b25ea7981a04c1a">finalize</a>(); }</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a9a9980026ff8bda42a01302394de2e56">   30</a></span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classTrafficAnalyzer.html#a9a9980026ff8bda42a01302394de2e56">onPacketArrives</a>(pcpp::RawPacket *packet, pcpp::PcapLiveDevice *<a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>, <span class="keywordtype">void</span> *cookie)</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> *analyzer = <span class="keyword">static_cast&lt;</span><a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> *<span class="keyword">&gt;</span>(cookie);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        std::lock_guard&lt;std::mutex&gt; guard(*analyzer-&gt;<a class="code" href="classTrafficAnalyzer.html#a558c4d38d1882d87d3ccc5de5805a87e">collectorMutex</a>);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        analyzer-&gt;<a class="code" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">trafficStats</a>-&gt;addPacket(pcpp::Packet(packet));</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a4e9673309bf4857d8e997c80f950b7ad">   38</a></span>&#160;    <a class="code" href="classTrafficAnalyzer.html#a4e9673309bf4857d8e997c80f950b7ad">TrafficAnalyzer</a>() : <a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>(nullptr), <a class="code" href="classTrafficAnalyzer.html#a558c4d38d1882d87d3ccc5de5805a87e">collectorMutex</a>(std::make_unique&lt;std::mutex&gt;()) {}</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a45c94d363918bf6acca16d75df3165e0">   39</a></span>&#160;    <a class="code" href="classTrafficAnalyzer.html#a45c94d363918bf6acca16d75df3165e0">~TrafficAnalyzer</a>() { <a class="code" href="classTrafficAnalyzer.html#acc91b7d71bb3f1fe5b25ea7981a04c1a">finalize</a>(); }</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#ac5b4aa956b07dfbecf20f47fcf3cae5a">   41</a></span>&#160;    <a class="code" href="classTrafficAnalyzer.html#ac5b4aa956b07dfbecf20f47fcf3cae5a">TrafficAnalyzer</a>(<span class="keyword">const</span> <a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> &amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a8ec42d7750b2e9d49329469a1b714de6">   42</a></span>&#160;    <a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> &amp;<a class="code" href="classTrafficAnalyzer.html#a8ec42d7750b2e9d49329469a1b714de6">operator=</a>(<span class="keyword">const</span> <a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> &amp;) = <span class="keyword">delete</span>;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#ac5b4aa956b07dfbecf20f47fcf3cae5a">   44</a></span>&#160;    <a class="code" href="classTrafficAnalyzer.html#ac5b4aa956b07dfbecf20f47fcf3cae5a">TrafficAnalyzer</a>(<span class="keyword">const</span> <a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> &amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a8ec42d7750b2e9d49329469a1b714de6">   45</a></span>&#160;    <a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> &amp;<a class="code" href="classTrafficAnalyzer.html#a8ec42d7750b2e9d49329469a1b714de6">operator=</a>(<span class="keyword">const</span> <a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> &amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#ac7f49c95e1a1ea1677f3f2cb55b769bd">   47</a></span>&#160;    <a class="code" href="classTrafficAnalyzer.html#ac7f49c95e1a1ea1677f3f2cb55b769bd">TrafficAnalyzer</a>(<a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> &amp;&amp;other)</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        : dev(other.dev),</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;          interfaceIpAddr(std::move(other.interfaceIpAddr)),</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;          collectorMutex(std::move(other.collectorMutex)),</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;          filter(std::move(other.filter)),</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;          trafficStats(std::move(other.trafficStats))</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        other.dev = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#ad1e0bb187107af580d206a21fccc99fe">   57</a></span>&#160;    <a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> &amp;<a class="code" href="classTrafficAnalyzer.html#ad1e0bb187107af580d206a21fccc99fe">operator=</a>(<a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> &amp;&amp;other)</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        dev = other.dev;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        filter = std::move(other.filter);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        trafficStats = std::move(other.trafficStats);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        collectorMutex = std::move(other.collectorMutex);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        interfaceIpAddr = std::move(other.interfaceIpAddr);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        other.dev = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#ac7f49c95e1a1ea1677f3f2cb55b769bd">   44</a></span>&#160;    <a class="code" href="classTrafficAnalyzer.html#ac7f49c95e1a1ea1677f3f2cb55b769bd">TrafficAnalyzer</a>(<a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> &amp;&amp;other)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        : <a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>(other.<a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>),</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;          <a class="code" href="classTrafficAnalyzer.html#a3493fa526dc2fba686f496527e529936">interfaceIpAddr</a>(std::move(other.<a class="code" href="classTrafficAnalyzer.html#a3493fa526dc2fba686f496527e529936">interfaceIpAddr</a>)),</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;          <a class="code" href="classTrafficAnalyzer.html#a558c4d38d1882d87d3ccc5de5805a87e">collectorMutex</a>(std::move(other.<a class="code" href="classTrafficAnalyzer.html#a558c4d38d1882d87d3ccc5de5805a87e">collectorMutex</a>)),</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;          <a class="code" href="classTrafficAnalyzer.html#adbfc0aa4a3c15e36bedcfa83cb5835c1">filter</a>(std::move(other.<a class="code" href="classTrafficAnalyzer.html#adbfc0aa4a3c15e36bedcfa83cb5835c1">filter</a>)),</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;          <a class="code" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">trafficStats</a>(std::move(other.<a class="code" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">trafficStats</a>))</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        other.dev = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#ad1e0bb187107af580d206a21fccc99fe">   54</a></span>&#160;    <a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> &amp;<a class="code" href="classTrafficAnalyzer.html#ad1e0bb187107af580d206a21fccc99fe">operator=</a>(<a class="code" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> &amp;&amp;other)</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a> = other.dev;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <a class="code" href="classTrafficAnalyzer.html#adbfc0aa4a3c15e36bedcfa83cb5835c1">filter</a> = std::move(other.filter);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <a class="code" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">trafficStats</a> = std::move(other.trafficStats);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <a class="code" href="classTrafficAnalyzer.html#a558c4d38d1882d87d3ccc5de5805a87e">collectorMutex</a> = std::move(other.collectorMutex);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="code" href="classTrafficAnalyzer.html#a3493fa526dc2fba686f496527e529936">interfaceIpAddr</a> = std::move(other.interfaceIpAddr);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        other.dev = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a83505611a0146108a4de6e04ba571bbe">   78</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTrafficAnalyzer.html#a83505611a0146108a4de6e04ba571bbe">initializeAs</a>(<span class="keyword">const</span> std::string &amp;interfaceIpAddr,</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                      std::vector&lt;pcpp::GeneralFilter *&gt; &amp;portFilterVec,</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                      std::string &amp;errorInfo)</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        this-&gt;interfaceIpAddr = interfaceIpAddr;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        dev = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDeviceByIp(interfaceIpAddr);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">if</span> (!dev)</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            errorInfo = <span class="stringliteral">&quot;TrafficAnalyzer: cannot find interface with IPv4 address of &#39;&quot;</span> + interfaceIpAddr + <span class="stringliteral">&quot;&#39;&quot;</span>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordflow">if</span> (!dev-&gt;open())</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            errorInfo = <span class="stringliteral">&quot;TrafficAnalyzer: cannot open device&quot;</span>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        filter = pcpp::OrFilter(portFilterVec);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        std::string filterAsString;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        filter.parseToString(filterAsString);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordflow">if</span> (!dev-&gt;setFilter(filter))</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        {</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            errorInfo = <span class="stringliteral">&quot;TrafficAnalyzer: cannot set filter &#39;&quot;</span> + filterAsString + <span class="stringliteral">&quot;&#39;&quot;</span>;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            dev-&gt;close();</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        }</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        BOOST_LOG_TRIVIAL(info) &lt;&lt; <span class="stringliteral">&quot;TrafficAnalyzer filter: &#39;&quot;</span> &lt;&lt; filterAsString &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span>;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        trafficStats = std::make_unique&lt;T&gt;(interfaceIpAddr);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a83505611a0146108a4de6e04ba571bbe">   75</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTrafficAnalyzer.html#a83505611a0146108a4de6e04ba571bbe">initializeAs</a>(<span class="keyword">const</span> std::string &amp;<a class="code" href="classTrafficAnalyzer.html#a3493fa526dc2fba686f496527e529936">interfaceIpAddr</a>,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                      std::vector&lt;pcpp::GeneralFilter *&gt; &amp;portFilterVec,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                      std::string &amp;errorInfo)</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        this-&gt;interfaceIpAddr = <a class="code" href="classTrafficAnalyzer.html#a3493fa526dc2fba686f496527e529936">interfaceIpAddr</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a> = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDeviceByIp(<a class="code" href="classTrafficAnalyzer.html#a3493fa526dc2fba686f496527e529936">interfaceIpAddr</a>);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>)</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            errorInfo = <span class="stringliteral">&quot;TrafficAnalyzer: cannot find interface with IPv4 address of &#39;&quot;</span> + <a class="code" href="classTrafficAnalyzer.html#a3493fa526dc2fba686f496527e529936">interfaceIpAddr</a> + <span class="stringliteral">&quot;&#39;&quot;</span>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        }</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>-&gt;open())</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            errorInfo = <span class="stringliteral">&quot;TrafficAnalyzer: cannot open device&quot;</span>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <a class="code" href="classTrafficAnalyzer.html#adbfc0aa4a3c15e36bedcfa83cb5835c1">filter</a> = pcpp::OrFilter(portFilterVec);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        std::string filterAsString;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <a class="code" href="classTrafficAnalyzer.html#adbfc0aa4a3c15e36bedcfa83cb5835c1">filter</a>.parseToString(filterAsString);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>-&gt;setFilter(<a class="code" href="classTrafficAnalyzer.html#adbfc0aa4a3c15e36bedcfa83cb5835c1">filter</a>))</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        {</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            errorInfo = <span class="stringliteral">&quot;TrafficAnalyzer: cannot set filter &#39;&quot;</span> + filterAsString + <span class="stringliteral">&quot;&#39;&quot;</span>;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>-&gt;close();</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        BOOST_LOG_TRIVIAL(info) &lt;&lt; <span class="stringliteral">&quot;TrafficAnalyzer filter: &#39;&quot;</span> &lt;&lt; filterAsString &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <a class="code" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">trafficStats</a> = std::make_unique&lt;T&gt;(<a class="code" href="classTrafficAnalyzer.html#a3493fa526dc2fba686f496527e529936">interfaceIpAddr</a>);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    }</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#acc91b7d71bb3f1fe5b25ea7981a04c1a">  116</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTrafficAnalyzer.html#acc91b7d71bb3f1fe5b25ea7981a04c1a">finalize</a>()</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    {</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="keywordflow">if</span> (dev)</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        {</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            <span class="keywordflow">if</span> (dev-&gt;captureActive())</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                dev-&gt;stopCapture();</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <span class="keywordflow">if</span> (dev-&gt;isOpened())</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                dev-&gt;close();</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        }</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <span class="keywordflow">if</span> (trafficStats.get())</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            trafficStats-&gt;clear();</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    }</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a3f4e7c1079bcf313d81cb557266b5b60">  132</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTrafficAnalyzer.html#a3f4e7c1079bcf313d81cb557266b5b60">startCapture</a>()</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    {</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        <span class="keywordflow">if</span> (dev &amp;&amp; dev-&gt;isOpened())</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            dev-&gt;startCapture(onPacketArrives, <span class="keyword">this</span>);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            BOOST_LOG_TRIVIAL(warning) &lt;&lt; <span class="stringliteral">&quot;TrafficAnalyzer trying to startCapture, but device was not opened or nullptr&quot;</span>;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    }</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
-<div class="line"><a name="l00141"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#adc6fc7b2e2eb8057d34e8687c28ba767">  141</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTrafficAnalyzer.html#adc6fc7b2e2eb8057d34e8687c28ba767">stopCapture</a>() { dev-&gt;stopCapture(); }</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
-<div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a5f4953c482351375f170d5bd1f9ab6dc">  144</a></span>&#160;    std::string <a class="code" href="classTrafficAnalyzer.html#a5f4953c482351375f170d5bd1f9ab6dc">getPlaneTextStat</a>()</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    {</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        std::lock_guard&lt;std::mutex&gt; guard(*collectorMutex);</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="keywordflow">return</span> trafficStats-&gt;toString();</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    }</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00151"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a55c41ada9ca260a42242cfbd1c1bf348">  151</a></span>&#160;    std::string <a class="code" href="classTrafficAnalyzer.html#a55c41ada9ca260a42242cfbd1c1bf348">getJsonStat</a>()</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    {</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        std::lock_guard&lt;std::mutex&gt; guard(*collectorMutex);</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <span class="keywordflow">return</span> trafficStats-&gt;toJsonString();</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    }</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
-<div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#ac47f2c89f78f0ed30fb18f7dc32c4586">  158</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTrafficAnalyzer.html#ac47f2c89f78f0ed30fb18f7dc32c4586">clearStats</a>()</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    {</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        std::lock_guard&lt;std::mutex&gt; guard(*collectorMutex);</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        trafficStats-&gt;clear();</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    }</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;};</div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#acc91b7d71bb3f1fe5b25ea7981a04c1a">  113</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTrafficAnalyzer.html#acc91b7d71bb3f1fe5b25ea7981a04c1a">finalize</a>()</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    {</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>)</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        {</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>-&gt;captureActive())</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                <a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>-&gt;stopCapture();</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>-&gt;isOpened())</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                <a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>-&gt;close();</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">trafficStats</a>.get())</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <a class="code" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">trafficStats</a>-&gt;clear();</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    }</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a3f4e7c1079bcf313d81cb557266b5b60">  129</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTrafficAnalyzer.html#a3f4e7c1079bcf313d81cb557266b5b60">startCapture</a>()</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    {</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a> &amp;&amp; <a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>-&gt;isOpened())</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            <a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>-&gt;startCapture(<a class="code" href="classTrafficAnalyzer.html#a9a9980026ff8bda42a01302394de2e56">onPacketArrives</a>, <span class="keyword">this</span>);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            BOOST_LOG_TRIVIAL(warning) &lt;&lt; <span class="stringliteral">&quot;TrafficAnalyzer startCapture failed, device was not opened or nullptr&quot;</span>;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    }</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
+<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#adc6fc7b2e2eb8057d34e8687c28ba767">  138</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTrafficAnalyzer.html#adc6fc7b2e2eb8057d34e8687c28ba767">stopCapture</a>()</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    {</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a> &amp;&amp; <a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>-&gt;isOpened())</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            <a class="code" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>-&gt;stopCapture();</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;            BOOST_LOG_TRIVIAL(warning) &lt;&lt; <span class="stringliteral">&quot;TrafficAnalyzer stopCapture failed, device was not opened or nullptr&quot;</span>;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    }</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
+<div class="line"><a name="l00147"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a5f4953c482351375f170d5bd1f9ab6dc">  147</a></span>&#160;    std::string <a class="code" href="classTrafficAnalyzer.html#a5f4953c482351375f170d5bd1f9ab6dc">getPlaneTextStat</a>()</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    {</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">trafficStats</a>.get())</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        {</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            BOOST_LOG_TRIVIAL(warning) &lt;&lt; <span class="stringliteral">&quot;TrafficAnalyzer trying get plain text stat, but trafficStats was nullptr&quot;</span>;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        }</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        std::lock_guard&lt;std::mutex&gt; guard(*<a class="code" href="classTrafficAnalyzer.html#a558c4d38d1882d87d3ccc5de5805a87e">collectorMutex</a>);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">trafficStats</a>-&gt;toString();</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    }</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
+<div class="line"><a name="l00160"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#a55c41ada9ca260a42242cfbd1c1bf348">  160</a></span>&#160;    std::string <a class="code" href="classTrafficAnalyzer.html#a55c41ada9ca260a42242cfbd1c1bf348">getJsonStat</a>()</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    {</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">trafficStats</a>.get())</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        {</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            BOOST_LOG_TRIVIAL(warning) &lt;&lt; <span class="stringliteral">&quot;TrafficAnalyzer trying get json stat, but trafficStats was nullptr&quot;</span>;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        }</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        std::lock_guard&lt;std::mutex&gt; guard(*<a class="code" href="classTrafficAnalyzer.html#a558c4d38d1882d87d3ccc5de5805a87e">collectorMutex</a>);</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">trafficStats</a>-&gt;toJsonString();</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    }</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
+<div class="line"><a name="l00173"></a><span class="lineno"><a class="line" href="classTrafficAnalyzer.html#ac47f2c89f78f0ed30fb18f7dc32c4586">  173</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTrafficAnalyzer.html#ac47f2c89f78f0ed30fb18f7dc32c4586">clearStats</a>()</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    {</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">trafficStats</a>.get())</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        {</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            BOOST_LOG_TRIVIAL(warning) &lt;&lt; <span class="stringliteral">&quot;TrafficAnalyzer trying clear stat, but trafficStats was nullptr&quot;</span>;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        }</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        std::lock_guard&lt;std::mutex&gt; guard(*<a class="code" href="classTrafficAnalyzer.html#a558c4d38d1882d87d3ccc5de5805a87e">collectorMutex</a>);</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        <a class="code" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">trafficStats</a>-&gt;clear();</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    }</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;};</div>
 <div class="ttc" id="aITrafficStats_8h_html"><div class="ttname"><a href="ITrafficStats_8h.html">ITrafficStats.h</a></div></div>
-<div class="ttc" id="aclassTrafficAnalyzer_html"><div class="ttname"><a href="classTrafficAnalyzer.html">TrafficAnalyzer</a></div><div class="ttdoc">Класс реализующий перехват пакетов из живого трафика и их анализ</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:23</div></div>
-<div class="ttc" id="aclassTrafficAnalyzer_html_a3f4e7c1079bcf313d81cb557266b5b60"><div class="ttname"><a href="classTrafficAnalyzer.html#a3f4e7c1079bcf313d81cb557266b5b60">TrafficAnalyzer::startCapture</a></div><div class="ttdeci">void startCapture()</div><div class="ttdoc">Начинает захват пакетов из живого трафика</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:132</div></div>
-<div class="ttc" id="aclassTrafficAnalyzer_html_a45c94d363918bf6acca16d75df3165e0"><div class="ttname"><a href="classTrafficAnalyzer.html#a45c94d363918bf6acca16d75df3165e0">TrafficAnalyzer::~TrafficAnalyzer</a></div><div class="ttdeci">~TrafficAnalyzer()</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:42</div></div>
-<div class="ttc" id="aclassTrafficAnalyzer_html_a4e9673309bf4857d8e997c80f950b7ad"><div class="ttname"><a href="classTrafficAnalyzer.html#a4e9673309bf4857d8e997c80f950b7ad">TrafficAnalyzer::TrafficAnalyzer</a></div><div class="ttdeci">TrafficAnalyzer()</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:41</div></div>
-<div class="ttc" id="aclassTrafficAnalyzer_html_a55c41ada9ca260a42242cfbd1c1bf348"><div class="ttname"><a href="classTrafficAnalyzer.html#a55c41ada9ca260a42242cfbd1c1bf348">TrafficAnalyzer::getJsonStat</a></div><div class="ttdeci">std::string getJsonStat()</div><div class="ttdoc">Возвращает собранную статистику в формате JSON строки</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:151</div></div>
-<div class="ttc" id="aclassTrafficAnalyzer_html_a5f4953c482351375f170d5bd1f9ab6dc"><div class="ttname"><a href="classTrafficAnalyzer.html#a5f4953c482351375f170d5bd1f9ab6dc">TrafficAnalyzer::getPlaneTextStat</a></div><div class="ttdeci">std::string getPlaneTextStat()</div><div class="ttdoc">Возвращает собранную статистику в виде строки</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:144</div></div>
-<div class="ttc" id="aclassTrafficAnalyzer_html_a83505611a0146108a4de6e04ba571bbe"><div class="ttname"><a href="classTrafficAnalyzer.html#a83505611a0146108a4de6e04ba571bbe">TrafficAnalyzer::initializeAs</a></div><div class="ttdeci">bool initializeAs(const std::string &amp;interfaceIpAddr, std::vector&lt; pcpp::GeneralFilter * &gt; &amp;portFilterVec, std::string &amp;errorInfo)</div><div class="ttdoc">Инициализирующий метод</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:78</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html"><div class="ttname"><a href="classTrafficAnalyzer.html">TrafficAnalyzer</a></div><div class="ttdoc">Класс реализующий перехват пакетов из живого трафика и их анализ Производит захват и обработку пакето...</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:20</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_a03f8faa52ceb71861ae76f3b9d8ac775"><div class="ttname"><a href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">TrafficAnalyzer::trafficStats</a></div><div class="ttdeci">std::unique_ptr&lt; ITrafficStats &gt; trafficStats</div><div class="ttdoc">Объект отвечающий за обработку траффика и вывод статистики в формате строки</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:28</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_a3493fa526dc2fba686f496527e529936"><div class="ttname"><a href="classTrafficAnalyzer.html#a3493fa526dc2fba686f496527e529936">TrafficAnalyzer::interfaceIpAddr</a></div><div class="ttdeci">std::string interfaceIpAddr</div><div class="ttdoc">IP-адрес интерфейса, для которого собирается статистика</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:22</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_a3f4e7c1079bcf313d81cb557266b5b60"><div class="ttname"><a href="classTrafficAnalyzer.html#a3f4e7c1079bcf313d81cb557266b5b60">TrafficAnalyzer::startCapture</a></div><div class="ttdeci">void startCapture()</div><div class="ttdoc">Начинает захват пакетов из живого трафика</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:129</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_a45c94d363918bf6acca16d75df3165e0"><div class="ttname"><a href="classTrafficAnalyzer.html#a45c94d363918bf6acca16d75df3165e0">TrafficAnalyzer::~TrafficAnalyzer</a></div><div class="ttdeci">~TrafficAnalyzer()</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:39</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_a4e9673309bf4857d8e997c80f950b7ad"><div class="ttname"><a href="classTrafficAnalyzer.html#a4e9673309bf4857d8e997c80f950b7ad">TrafficAnalyzer::TrafficAnalyzer</a></div><div class="ttdeci">TrafficAnalyzer()</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:38</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_a558c4d38d1882d87d3ccc5de5805a87e"><div class="ttname"><a href="classTrafficAnalyzer.html#a558c4d38d1882d87d3ccc5de5805a87e">TrafficAnalyzer::collectorMutex</a></div><div class="ttdeci">std::unique_ptr&lt; std::mutex &gt; collectorMutex</div><div class="ttdoc">Объект синхронизирущий работу со статистикой из рахных потоков</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:27</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_a55c41ada9ca260a42242cfbd1c1bf348"><div class="ttname"><a href="classTrafficAnalyzer.html#a55c41ada9ca260a42242cfbd1c1bf348">TrafficAnalyzer::getJsonStat</a></div><div class="ttdeci">std::string getJsonStat()</div><div class="ttdoc">Возвращает собранную статистику в формате JSON строки</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:160</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_a5f4953c482351375f170d5bd1f9ab6dc"><div class="ttname"><a href="classTrafficAnalyzer.html#a5f4953c482351375f170d5bd1f9ab6dc">TrafficAnalyzer::getPlaneTextStat</a></div><div class="ttdeci">std::string getPlaneTextStat()</div><div class="ttdoc">Возвращает собранную статистику в виде строки</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:147</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_a776811cbe85af2f4a41c5a3d4bf8d96d"><div class="ttname"><a href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">TrafficAnalyzer::dev</a></div><div class="ttdeci">pcpp::PcapLiveDevice * dev</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:25</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_a83505611a0146108a4de6e04ba571bbe"><div class="ttname"><a href="classTrafficAnalyzer.html#a83505611a0146108a4de6e04ba571bbe">TrafficAnalyzer::initializeAs</a></div><div class="ttdeci">bool initializeAs(const std::string &amp;interfaceIpAddr, std::vector&lt; pcpp::GeneralFilter * &gt; &amp;portFilterVec, std::string &amp;errorInfo)</div><div class="ttdoc">Инициализирующий метод</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:75</div></div>
 <div class="ttc" id="aclassTrafficAnalyzer_html_a8ec42d7750b2e9d49329469a1b714de6"><div class="ttname"><a href="classTrafficAnalyzer.html#a8ec42d7750b2e9d49329469a1b714de6">TrafficAnalyzer::operator=</a></div><div class="ttdeci">TrafficAnalyzer &amp; operator=(const TrafficAnalyzer &amp;)=delete</div></div>
-<div class="ttc" id="aclassTrafficAnalyzer_html_ac47f2c89f78f0ed30fb18f7dc32c4586"><div class="ttname"><a href="classTrafficAnalyzer.html#ac47f2c89f78f0ed30fb18f7dc32c4586">TrafficAnalyzer::clearStats</a></div><div class="ttdeci">void clearStats()</div><div class="ttdoc">Очищает собранную статистику</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:158</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_a9a9980026ff8bda42a01302394de2e56"><div class="ttname"><a href="classTrafficAnalyzer.html#a9a9980026ff8bda42a01302394de2e56">TrafficAnalyzer::onPacketArrives</a></div><div class="ttdeci">static void onPacketArrives(pcpp::RawPacket *packet, pcpp::PcapLiveDevice *dev, void *cookie)</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:30</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_ac47f2c89f78f0ed30fb18f7dc32c4586"><div class="ttname"><a href="classTrafficAnalyzer.html#ac47f2c89f78f0ed30fb18f7dc32c4586">TrafficAnalyzer::clearStats</a></div><div class="ttdeci">void clearStats()</div><div class="ttdoc">Очищает собранную статистику</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:173</div></div>
 <div class="ttc" id="aclassTrafficAnalyzer_html_ac5b4aa956b07dfbecf20f47fcf3cae5a"><div class="ttname"><a href="classTrafficAnalyzer.html#ac5b4aa956b07dfbecf20f47fcf3cae5a">TrafficAnalyzer::TrafficAnalyzer</a></div><div class="ttdeci">TrafficAnalyzer(const TrafficAnalyzer &amp;)=delete</div></div>
-<div class="ttc" id="aclassTrafficAnalyzer_html_ac7f49c95e1a1ea1677f3f2cb55b769bd"><div class="ttname"><a href="classTrafficAnalyzer.html#ac7f49c95e1a1ea1677f3f2cb55b769bd">TrafficAnalyzer::TrafficAnalyzer</a></div><div class="ttdeci">TrafficAnalyzer(TrafficAnalyzer &amp;&amp;other)</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:47</div></div>
-<div class="ttc" id="aclassTrafficAnalyzer_html_acc91b7d71bb3f1fe5b25ea7981a04c1a"><div class="ttname"><a href="classTrafficAnalyzer.html#acc91b7d71bb3f1fe5b25ea7981a04c1a">TrafficAnalyzer::finalize</a></div><div class="ttdeci">void finalize()</div><div class="ttdoc">Освобождения ресурсы, занимаемымы объектом</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:116</div></div>
-<div class="ttc" id="aclassTrafficAnalyzer_html_ad1e0bb187107af580d206a21fccc99fe"><div class="ttname"><a href="classTrafficAnalyzer.html#ad1e0bb187107af580d206a21fccc99fe">TrafficAnalyzer::operator=</a></div><div class="ttdeci">TrafficAnalyzer &amp; operator=(TrafficAnalyzer &amp;&amp;other)</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:57</div></div>
-<div class="ttc" id="aclassTrafficAnalyzer_html_adc6fc7b2e2eb8057d34e8687c28ba767"><div class="ttname"><a href="classTrafficAnalyzer.html#adc6fc7b2e2eb8057d34e8687c28ba767">TrafficAnalyzer::stopCapture</a></div><div class="ttdeci">void stopCapture()</div><div class="ttdoc">Останавливает захват пакетов</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:141</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_ac7f49c95e1a1ea1677f3f2cb55b769bd"><div class="ttname"><a href="classTrafficAnalyzer.html#ac7f49c95e1a1ea1677f3f2cb55b769bd">TrafficAnalyzer::TrafficAnalyzer</a></div><div class="ttdeci">TrafficAnalyzer(TrafficAnalyzer &amp;&amp;other)</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:44</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_acc91b7d71bb3f1fe5b25ea7981a04c1a"><div class="ttname"><a href="classTrafficAnalyzer.html#acc91b7d71bb3f1fe5b25ea7981a04c1a">TrafficAnalyzer::finalize</a></div><div class="ttdeci">void finalize()</div><div class="ttdoc">Освобождения ресурсы, занимаемымы объектом</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:113</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_ad1e0bb187107af580d206a21fccc99fe"><div class="ttname"><a href="classTrafficAnalyzer.html#ad1e0bb187107af580d206a21fccc99fe">TrafficAnalyzer::operator=</a></div><div class="ttdeci">TrafficAnalyzer &amp; operator=(TrafficAnalyzer &amp;&amp;other)</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:54</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_adbfc0aa4a3c15e36bedcfa83cb5835c1"><div class="ttname"><a href="classTrafficAnalyzer.html#adbfc0aa4a3c15e36bedcfa83cb5835c1">TrafficAnalyzer::filter</a></div><div class="ttdeci">pcpp::OrFilter filter</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:24</div></div>
+<div class="ttc" id="aclassTrafficAnalyzer_html_adc6fc7b2e2eb8057d34e8687c28ba767"><div class="ttname"><a href="classTrafficAnalyzer.html#adc6fc7b2e2eb8057d34e8687c28ba767">TrafficAnalyzer::stopCapture</a></div><div class="ttdeci">void stopCapture()</div><div class="ttdoc">Останавливает захват пакетов</div><div class="ttdef"><b>Definition:</b> TrafficAnalyzer.h:138</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

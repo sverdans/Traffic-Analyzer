@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['hostinfo_9',['HostInfo',['../structHostInfo.html',1,'']]],
-  ['hostinfo_2eh_10',['HostInfo.h',['../HostInfo_8h.html',1,'']]],
-  ['httptrafficstats_11',['HttpTrafficStats',['../classHttpTrafficStats.html',1,'HttpTrafficStats'],['../classHttpTrafficStats.html#af3c55604cdd4eab681438c592aac2445',1,'HttpTrafficStats::HttpTrafficStats()']]],
-  ['httptrafficstats_2eh_12',['HttpTrafficStats.h',['../HttpTrafficStats_8h.html',1,'']]]
+  ['getjsonstat_10',['getJsonStat',['../classTrafficAnalyzer.html#a55c41ada9ca260a42242cfbd1c1bf348',1,'TrafficAnalyzer']]],
+  ['getplanetextstat_11',['getPlaneTextStat',['../classTrafficAnalyzer.html#a5f4953c482351375f170d5bd1f9ab6dc',1,'TrafficAnalyzer']]]
 ];

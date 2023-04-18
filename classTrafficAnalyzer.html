@@ -63,13 +63,15 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#pri-static-methods">Закрытые статические члены</a> &#124;
+<a href="#pri-attribs">Закрытые данные</a> &#124;
 <a href="classTrafficAnalyzer-members.html">Полный список членов класса</a>  </div>
   <div class="headertitle">
 <div class="title">Класс TrafficAnalyzer</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Класс реализующий перехват пакетов из живого трафика и их анализ  
+<p>Класс реализующий перехват пакетов из живого трафика и их анализ Производит захват и обработку пакетов в отдельном потоке  
  <a href="classTrafficAnalyzer.html#details">Подробнее...</a></p>
 
 <p><code>#include &lt;<a class="el" href="TrafficAnalyzer_8h_source.html">TrafficAnalyzer.h</a>&gt;</code></p>
@@ -89,7 +91,7 @@ $(function() {
 <tr class="memitem:ad1e0bb187107af580d206a21fccc99fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTrafficAnalyzer.html#ad1e0bb187107af580d206a21fccc99fe">operator=</a> (<a class="el" href="classTrafficAnalyzer.html">TrafficAnalyzer</a> &amp;&amp;other)</td></tr>
 <tr class="separator:ad1e0bb187107af580d206a21fccc99fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83505611a0146108a4de6e04ba571bbe"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a83505611a0146108a4de6e04ba571bbe"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classTrafficAnalyzer.html#a83505611a0146108a4de6e04ba571bbe">initializeAs</a> (const std::string &amp;interfaceIpAddr, std::vector&lt; pcpp::GeneralFilter * &gt; &amp;portFilterVec, std::string &amp;errorInfo)</td></tr>
+<tr class="memitem:a83505611a0146108a4de6e04ba571bbe"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classTrafficAnalyzer.html#a83505611a0146108a4de6e04ba571bbe">initializeAs</a> (const std::string &amp;<a class="el" href="classTrafficAnalyzer.html#a3493fa526dc2fba686f496527e529936">interfaceIpAddr</a>, std::vector&lt; pcpp::GeneralFilter * &gt; &amp;portFilterVec, std::string &amp;errorInfo)</td></tr>
 <tr class="memdesc:a83505611a0146108a4de6e04ba571bbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Инициализирующий метод  <a href="classTrafficAnalyzer.html#a83505611a0146108a4de6e04ba571bbe">Подробнее...</a><br /></td></tr>
 <tr class="separator:a83505611a0146108a4de6e04ba571bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc91b7d71bb3f1fe5b25ea7981a04c1a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTrafficAnalyzer.html#acc91b7d71bb3f1fe5b25ea7981a04c1a">finalize</a> ()</td></tr>
@@ -110,10 +112,30 @@ $(function() {
 <tr class="memitem:ac47f2c89f78f0ed30fb18f7dc32c4586"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTrafficAnalyzer.html#ac47f2c89f78f0ed30fb18f7dc32c4586">clearStats</a> ()</td></tr>
 <tr class="memdesc:ac47f2c89f78f0ed30fb18f7dc32c4586"><td class="mdescLeft">&#160;</td><td class="mdescRight">Очищает собранную статистику  <a href="classTrafficAnalyzer.html#ac47f2c89f78f0ed30fb18f7dc32c4586">Подробнее...</a><br /></td></tr>
 <tr class="separator:ac47f2c89f78f0ed30fb18f7dc32c4586"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
+Закрытые статические члены</h2></td></tr>
+<tr class="memitem:a9a9980026ff8bda42a01302394de2e56"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTrafficAnalyzer.html#a9a9980026ff8bda42a01302394de2e56">onPacketArrives</a> (pcpp::RawPacket *packet, pcpp::PcapLiveDevice *<a class="el" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a>, void *cookie)</td></tr>
+<tr class="separator:a9a9980026ff8bda42a01302394de2e56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Закрытые данные</h2></td></tr>
+<tr class="memitem:a3493fa526dc2fba686f496527e529936"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTrafficAnalyzer.html#a3493fa526dc2fba686f496527e529936">interfaceIpAddr</a></td></tr>
+<tr class="memdesc:a3493fa526dc2fba686f496527e529936"><td class="mdescLeft">&#160;</td><td class="mdescRight">IP-адрес интерфейса, для которого собирается статистика  <a href="classTrafficAnalyzer.html#a3493fa526dc2fba686f496527e529936">Подробнее...</a><br /></td></tr>
+<tr class="separator:a3493fa526dc2fba686f496527e529936"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbfc0aa4a3c15e36bedcfa83cb5835c1"><td class="memItemLeft" align="right" valign="top">pcpp::OrFilter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTrafficAnalyzer.html#adbfc0aa4a3c15e36bedcfa83cb5835c1">filter</a></td></tr>
+<tr class="separator:adbfc0aa4a3c15e36bedcfa83cb5835c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a776811cbe85af2f4a41c5a3d4bf8d96d"><td class="memItemLeft" align="right" valign="top">pcpp::PcapLiveDevice *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTrafficAnalyzer.html#a776811cbe85af2f4a41c5a3d4bf8d96d">dev</a></td></tr>
+<tr class="separator:a776811cbe85af2f4a41c5a3d4bf8d96d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a558c4d38d1882d87d3ccc5de5805a87e"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; std::mutex &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTrafficAnalyzer.html#a558c4d38d1882d87d3ccc5de5805a87e">collectorMutex</a></td></tr>
+<tr class="memdesc:a558c4d38d1882d87d3ccc5de5805a87e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Объект синхронизирущий работу со статистикой из рахных потоков  <a href="classTrafficAnalyzer.html#a558c4d38d1882d87d3ccc5de5805a87e">Подробнее...</a><br /></td></tr>
+<tr class="separator:a558c4d38d1882d87d3ccc5de5805a87e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03f8faa52ceb71861ae76f3b9d8ac775"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classITrafficStats.html">ITrafficStats</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">trafficStats</a></td></tr>
+<tr class="memdesc:a03f8faa52ceb71861ae76f3b9d8ac775"><td class="mdescLeft">&#160;</td><td class="mdescRight">Объект отвечающий за обработку траффика и вывод статистики в формате строки  <a href="classTrafficAnalyzer.html#a03f8faa52ceb71861ae76f3b9d8ac775">Подробнее...</a><br /></td></tr>
+<tr class="separator:a03f8faa52ceb71861ae76f3b9d8ac775"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
-<div class="textblock"><p>Класс реализующий перехват пакетов из живого трафика и их анализ </p>
-<p>Производит захват и обработку пакетов в отдельном потоке </p>
+<div class="textblock"><p>Класс реализующий перехват пакетов из живого трафика и их анализ Производит захват и обработку пакетов в отдельном потоке </p>
 </div><h2 class="groupheader">Конструктор(ы)</h2>
 <a id="a4e9673309bf4857d8e997c80f950b7ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4e9673309bf4857d8e997c80f950b7ad">&#9670;&nbsp;</a></span>TrafficAnalyzer() <span class="overload">[1/3]</span></h2>
@@ -387,6 +409,48 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
+<a id="a9a9980026ff8bda42a01302394de2e56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a9980026ff8bda42a01302394de2e56">&#9670;&nbsp;</a></span>onPacketArrives()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void TrafficAnalyzer::onPacketArrives </td>
+          <td>(</td>
+          <td class="paramtype">pcpp::RawPacket *&#160;</td>
+          <td class="paramname"><em>packet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">pcpp::PcapLiveDevice *&#160;</td>
+          <td class="paramname"><em>dev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>cookie</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a8ec42d7750b2e9d49329469a1b714de6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8ec42d7750b2e9d49329469a1b714de6">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
 
@@ -490,6 +554,123 @@ template&lt;class T &gt; </div>
 </div><div class="memdoc">
 
 <p>Останавливает захват пакетов </p>
+
+</div>
+</div>
+<h2 class="groupheader">Данные класса</h2>
+<a id="a558c4d38d1882d87d3ccc5de5805a87e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a558c4d38d1882d87d3ccc5de5805a87e">&#9670;&nbsp;</a></span>collectorMutex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt;std::mutex&gt; TrafficAnalyzer::collectorMutex</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Объект синхронизирущий работу со статистикой из рахных потоков </p>
+
+</div>
+</div>
+<a id="a776811cbe85af2f4a41c5a3d4bf8d96d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a776811cbe85af2f4a41c5a3d4bf8d96d">&#9670;&nbsp;</a></span>dev</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pcpp::PcapLiveDevice* TrafficAnalyzer::dev</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adbfc0aa4a3c15e36bedcfa83cb5835c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbfc0aa4a3c15e36bedcfa83cb5835c1">&#9670;&nbsp;</a></span>filter</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pcpp::OrFilter TrafficAnalyzer::filter</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3493fa526dc2fba686f496527e529936"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3493fa526dc2fba686f496527e529936">&#9670;&nbsp;</a></span>interfaceIpAddr</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string TrafficAnalyzer::interfaceIpAddr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>IP-адрес интерфейса, для которого собирается статистика </p>
+
+</div>
+</div>
+<a id="a03f8faa52ceb71861ae76f3b9d8ac775"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03f8faa52ceb71861ae76f3b9d8ac775">&#9670;&nbsp;</a></span>trafficStats</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt;<a class="el" href="classITrafficStats.html">ITrafficStats</a>&gt; TrafficAnalyzer::trafficStats</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Объект отвечающий за обработку траффика и вывод статистики в формате строки </p>
 
 </div>
 </div>

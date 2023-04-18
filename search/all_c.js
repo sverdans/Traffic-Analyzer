@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['setuplogger_30',['setupLogger',['../namespaceapp.html#a65f02df4a1eb9a8ee962fcacdd76a170',1,'app']]],
-  ['shouldclose_31',['shouldClose',['../structapp_1_1ProgramOptions.html#a6410238df5184d930f5f25e37791ebcb',1,'app::ProgramOptions']]],
-  ['startcapture_32',['startCapture',['../classTrafficAnalyzer.html#a3f4e7c1079bcf313d81cb557266b5b60',1,'TrafficAnalyzer']]],
-  ['stopcapture_33',['stopCapture',['../classTrafficAnalyzer.html#adc6fc7b2e2eb8057d34e8687c28ba767',1,'TrafficAnalyzer']]]
+  ['readme_2emd_33',['README.md',['../README_8md.html',1,'']]]
 ];
