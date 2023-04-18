@@ -1,7 +1,5 @@
 #pragma once
 #include <iostream>
-#include <type_traits>
-#include <stdexcept>
 #include <memory>
 #include <string>
 #include <mutex>
@@ -16,7 +14,6 @@
 
 /**
  * \brief Класс реализующий перехват пакетов из живого трафика и их анализ
- *
  * Производит захват и обработку пакетов в отдельном потоке
  */
 class TrafficAnalyzer
@@ -134,15 +131,27 @@ public:
 		if (dev && dev->isOpened())
 			dev->startCapture(onPacketArrives, this);
 		else
-			BOOST_LOG_TRIVIAL(warning) << "TrafficAnalyzer trying to startCapture, but device was not opened or nullptr";
+			BOOST_LOG_TRIVIAL(warning) << "TrafficAnalyzer startCapture failed, device was not opened or nullptr";
 	}
 
 	/// \brief Останавливает захват пакетов
-	void stopCapture() { dev->stopCapture(); }
+	void stopCapture()
+	{
+		if (dev && dev->isOpened())
+			dev->stopCapture();
+		else
+			BOOST_LOG_TRIVIAL(warning) << "TrafficAnalyzer stopCapture failed, device was not opened or nullptr";
+	}
 
 	/// \brief Возвращает собранную статистику в виде строки
 	std::string getPlaneTextStat()
 	{
+		if (!trafficStats.get())
+		{
+			BOOST_LOG_TRIVIAL(warning) << "TrafficAnalyzer trying get plain text stat, but trafficStats was nullptr";
+			return "";
+		}
+
 		std::lock_guard<std::mutex> guard(*collectorMutex);
 		return trafficStats->toString();
 	}
@@ -150,6 +159,12 @@ public:
 	/// \brief Возвращает собранную статистику в формате JSON строки
 	std::string getJsonStat()
 	{
+		if (!trafficStats.get())
+		{
+			BOOST_LOG_TRIVIAL(warning) << "TrafficAnalyzer trying get json stat, but trafficStats was nullptr";
+			return "";
+		}
+
 		std::lock_guard<std::mutex> guard(*collectorMutex);
 		return trafficStats->toJsonString();
 	}
@@ -157,6 +172,12 @@ public:
 	/// \brief Очищает собранную статистику
 	void clearStats()
 	{
+		if (!trafficStats.get())
+		{
+			BOOST_LOG_TRIVIAL(warning) << "TrafficAnalyzer trying clear stat, but trafficStats was nullptr";
+			return;
+		}
+
 		std::lock_guard<std::mutex> guard(*collectorMutex);
 		trafficStats->clear();
 	}

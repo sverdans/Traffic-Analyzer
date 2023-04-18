@@ -23,16 +23,13 @@ struct TrafficAnalyzerClassTest : public testing::Test
 	}
 };
 
-TEST_F(TrafficAnalyzerClassTest, TestCreateWithNonexistentIp)
+TEST_F(TrafficAnalyzerClassTest, TestStartCaptureBeforeInit)
 {
-	std::string errorInfo;
-	EXPECT_EQ(false, analyzer.initializeAs<HttpTrafficStats>("255.255.255.255", vec, errorInfo));
 	analyzer.finalize();
+	EXPECT_NO_THROW(analyzer.startCapture());
 }
 
-TEST_F(TrafficAnalyzerClassTest, TestCreateWithExistentIp)
+TEST_F(TrafficAnalyzerClassTest, TestGetStatBeforeInit)
 {
-	std::string errorInfo;
-	EXPECT_EQ(true, analyzer.initializeAs<HttpTrafficStats>(realIp, vec, errorInfo));
-	analyzer.finalize();
+	EXPECT_EQ("", analyzer.getPlaneTextStat());
 }

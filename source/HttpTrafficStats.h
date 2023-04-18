@@ -10,8 +10,6 @@
 #include "PacketUtils.h"
 #include "HttpLayer.h"
 #include "SSLLayer.h"
-#include "TcpLayer.h"
-#include "UdpLayer.h"
 #include "IPv4Layer.h"
 
 #include "ITrafficStats.h"

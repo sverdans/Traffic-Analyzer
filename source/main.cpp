@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 
 	served::multiplexer mux;
 	mux.handle("/stat").get(
-		[&](served::response &res, const served::request &req)
+		[&httpAnalyzer](served::response &res, const served::request &req)
 		{
 			res.set_header("content-type", "application/json");
 			BOOST_LOG_TRIVIAL(debug) << "Server received a request GET /stat" << std::endl;
