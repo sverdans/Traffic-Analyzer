@@ -7,13 +7,13 @@
 #include <boost/log/trivial.hpp>
 #include <nlohmann/json.hpp>
 
-#include "PacketUtils.h"
-#include "HttpLayer.h"
-#include "SSLLayer.h"
-#include "IPv4Layer.h"
+#include <PacketUtils.h>
+#include <HttpLayer.h>
+#include <SSLLayer.h>
+#include <IPv4Layer.h>
 
-#include "ITrafficStats.h"
-#include "HostInfo.h"
+#include <ITrafficStats.h>
+#include <HostInfo.h>
 
 /// \brief Класс, определяющий формат вывода статистики и обработку пакетов HTTP трафика
 class HttpTrafficStats : public ITrafficStats
@@ -89,38 +89,6 @@ public:
 
 		int srcPort, dstPort;
 		std::string transportProtoName;
-
-		/*
-				if (auto *tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>())
-				{
-					transportProtoName = "TCP";
-					srcPort = tcpLayer->getSrcPort();
-					dstPort = tcpLayer->getDstPort();
-				}
-				else if (auto *udpLayer = packet.getLayerOfType<pcpp::UdpLayer>())
-				{
-					transportProtoName = "UDP";
-					srcPort = udpLayer->getSrcPort();
-					dstPort = udpLayer->getDstPort();
-				}
-				else
-				{
-					BOOST_LOG_TRIVIAL(warning) << "not tcp not udp packet: ";
-					auto *l = packet.getFirstLayer();
-					while (l)
-					{
-						BOOST_LOG_TRIVIAL(info) << "\t\tprotocjl: " << l->getProtocol();
-						l = l->getNextLayer();
-					}
-				}
-
-				BOOST_LOG_TRIVIAL(debug) << "Captured " << transportProtoName << " packet {"
-										 << " srcIP: " << std::left << std::setw(15) << srcIp
-										 << " dstIP: " << std::left << std::setw(15) << dstIp
-										 << " srcPort: " << std::left << std::setw(6) << srcPort
-										 << " dstPort: " << std::left << std::setw(6) << dstPort
-										 << " }";
-		*/
 
 		BOOST_LOG_TRIVIAL(debug) << "Captured packet {"
 								 << " srcIP: " << std::left << std::setw(15) << srcIp

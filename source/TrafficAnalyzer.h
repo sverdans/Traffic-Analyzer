@@ -6,11 +6,11 @@
 
 #include <boost/log/trivial.hpp>
 
-#include "PcapLiveDeviceList.h"
-#include "PacketUtils.h"
-#include "Packet.h"
+#include <PcapLiveDeviceList.h>
+#include <PacketUtils.h>
+#include <Packet.h>
 
-#include "ITrafficStats.h"
+#include <ITrafficStats.h>
 
 /**
  * \brief Класс реализующий перехват пакетов из живого трафика и их анализ

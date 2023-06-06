@@ -13,8 +13,8 @@
 #include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/log/detail/config.hpp>
 
-#include "PcapLiveDeviceList.h"
-#include "SystemUtils.h"
+#include <PcapLiveDeviceList.h>
+#include <SystemUtils.h>
 
 namespace app
 {

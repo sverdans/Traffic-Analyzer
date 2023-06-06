@@ -5,11 +5,11 @@
 #include <boost/log/trivial.hpp>
 #include <served/served.hpp>
 
-#include "SystemUtils.h"
+#include <SystemUtils.h>
 
-#include "App.h"
-#include "TrafficAnalyzer.h"
-#include "HttpTrafficStats.h"
+#include <App.h>
+#include <TrafficAnalyzer.h>
+#include <HttpTrafficStats.h>
 
 int main(int argc, char **argv)
 {

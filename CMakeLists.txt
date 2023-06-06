@@ -2,58 +2,82 @@ cmake_minimum_required(VERSION 3.22 FATAL_ERROR)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_VERBOSE_MAKEFILE ON)
-project(traffic-analyzer)
+set(PROJECT_NAME traffic-analyzer)
+
+project(${PROJECT_NAME})
 
 if(NOT PKG_CONFIG_FOUND)
-	include(CMakeFindDependencyMacro)
-	find_dependency(PkgConfig)
+    include(CMakeFindDependencyMacro)
+    find_dependency(PkgConfig)
 endif()
 
-include(FetchContent)
+function(fetch_dependencies)
 
-FetchContent_Declare(json 
-	URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz
-	SOURCE_DIR ${CMAKE_SOURCE_DIR}/external/nlohmann_json)
-FetchContent_MakeAvailable(json)
+    include(FetchContent)
 
-FetchContent_Declare(PcapPlusPlus
-	GIT_REPOSITORY https://github.com/seladb/PcapPlusPlus.git
-	SOURCE_DIR ${CMAKE_SOURCE_DIR}/external/PcapPlusPlus
-	GIT_TAG master)
-FetchContent_MakeAvailable(PcapPlusPlus)
+    set(LIBS_DIR ${CMAKE_BINARY_DIR}/external)
 
-find_package(Boost REQUIRED COMPONENTS
-	system
-	log
-	log_setup
-	program_options
-)
+    message(STATUS "Fetching Deps started")
 
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(SERVED_PKG REQUIRED IMPORTED_TARGET served)
+    set(PCAPPP_BUILD_EXAMPLES OFF)
+    set(PCAPPP_BUILD_TESTS OFF)
+    FetchContent_Declare(PcapPlusPlus
+        GIT_REPOSITORY https://github.com/seladb/PcapPlusPlus.git
+        SOURCE_DIR ${LIBS_DIR}/PcapPlusPlus
+        GIT_TAG master)
+    FetchContent_MakeAvailable(PcapPlusPlus)
 
-file(GLOB_RECURSE SOURCE
-	"source/*.h"
-	"source/*.cpp"
-)
+    set(SERVED_BUILD_EXAMPLES OFF)
+    FetchContent_Declare(served
+        GIT_REPOSITORY https://github.com/meltwater/served.git
+        SOURCE_DIR ${LIBS_DIR}/served
+        GIT_TAG master)
+    FetchContent_MakeAvailable(served)
+    target_include_directories(served PUBLIC ${LIBS_DIR}/served/src)
 
-add_executable(traffic-analyzer ${SOURCE})
+    set(JSON_BuildTests OFF CACHE INTERNAL "")
+    FetchContent_Declare(json
+        GIT_REPOSITORY https://github.com/nlohmann/json.git
+        SOURCE_DIR ${LIBS_DIR}/nlohmann
+        GIT_TAG v3.11.2)
+    FetchContent_MakeAvailable(json)
 
-target_link_libraries(traffic-analyzer PRIVATE
-	Boost::system
-	Boost::log
-	Boost::log_setup
-	Boost::program_options
+    FetchContent_Declare(googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        SOURCE_DIR ${LIBS_DIR}/google/googletest
+        GIT_TAG main)
+    FetchContent_MakeAvailable(googletest)
 
-	Pcap++
-	Packet++
-	Common++
+    message(STATUS "Fetching Deps done")
 
-	PkgConfig::SERVED_PKG
+    find_package(Boost REQUIRED COMPONENTS
+        system
+        log
+        log_setup
+        program_options)
 
-	nlohmann_json::nlohmann_json
-)
-include_directories(Source)
+endfunction()
+
+fetch_dependencies()
+
+file(GLOB_RECURSE SOURCE "source/*.h" "source/*.cpp")
+
+add_executable(${PROJECT_NAME} ${SOURCE})
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${LIBS_DIR}/served/src)
+    
+include_directories(${CMAKE_SOURCE_DIR}/source)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    served
+    Pcap++
+    Packet++
+    Common++
+    nlohmann_json::nlohmann_json
+    Boost::log
+    Boost::log_setup
+    Boost::program_options
+    Boost::system)
 
 add_subdirectory(tests)
 add_subdirectory(docs)
